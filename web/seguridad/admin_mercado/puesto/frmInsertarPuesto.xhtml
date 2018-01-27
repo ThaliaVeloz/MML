@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgInsertarPuesto" widgetVar="dlgInsertarPuesto" closable="false" modal="true" resizable="true" 
+              header="Registrar Puesto" showEffect="size" hideEffect="size">
+        <h:form id="frmInsertarPuesto">
+            <p:messages autoUpdate="true"/>
+            <p:panel>
+                <h:panelGrid columns="2" >
+                    <p:outputLabel value="Numero Puesto: "/>
+                    <p:inputText value="#{controladorPuesto.objPuesto.numero_puesto}"
+                                     required="true"
+                                     requiredMessage="La descripción es obligatoria"/>
+                    <p:outputLabel value="Tarifa"/>
+                    <p:selectOneMenu id="cmbTarifa" 
+                                     value="#{controladorPuesto.objPuesto.id_tarifa.idTarifa}" 
+                                     effect="fold" required="true" requiredMessage="La Tarifa es obligatoria">
+                        <f:selectItem itemLabel="--Seleccione --" itemValue="#{null}"/>
+                        <f:selectItems value="#{controladorPuesto.lstTarifa}"
+                                       var="sub" itemLabel="#{sub.valor_tarifa}" itemValue="#{sub.idTarifa}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Mercado"/>
+                    <p:selectOneMenu id="cmbMercado" 
+                                     value="#{controladorPuesto.objPuesto.id_mercado.id_mercado}" 
+                                     effect="fold" required="true" requiredMessage="El mercado es obligatoria">
+                        <f:selectItem itemLabel="--Seleccione --" itemValue="#{null}"/>
+                        <f:selectItems value="#{controladorPuesto.lstMercado}"
+                                       var="sub" itemLabel="#{sub.nombre_mercado}" itemValue="#{sub.id_mercado}"/>
+                    </p:selectOneMenu>
+
+                </h:panelGrid>
+            </p:panel>
+
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{controladorPuesto.insertar()}"
+                                 update="frmPrincipal:tblPuesto"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgInsertarPuesto').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

@@ -1,0 +1,72 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../../WEB-INF/templates/interna/template.xhtml">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">
+
+                    <h:form id="frmPrincipal">
+                        <p:growl autoUpdate="true" showDetail="true"/>
+                        <p:messages autoUpdate="true" showDetail="true"/>
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+
+                        <p:dataTable id="tblMercado" value="#{controladorMercado.lstMercado}" var="mercado" 
+                                     reflow="true" rows="10" paginator="true"
+                                     rowKey="#{mercado.id_mercado}"
+                                     selection="#{controladorMercado.mercadoSel}"
+                                     selectionMode="single">
+                            <p:column headerText="Id Mercado" width="10%">
+                                <h:outputText value="#{mercado.id_mercado}"/>
+                            </p:column>
+                            <p:column headerText="Nombre Mercado">
+                                <h:outputText value="#{mercado.nombre_mercado}"/>
+                            </p:column>
+                            <p:column headerText="Estado">
+                                <h:outputText value="#{mercado.estado}"/>
+                            </p:column>
+                            <p:column headerText="Editar" width="10%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-pencil"
+                                                 title="Editar" 
+                                                 onclick="PF('dlgEditarMercado').show()"
+                                                 update="frmEditarMercado">
+                                    <f:setPropertyActionListener value="#{mercado}" target="#{controladorMercado.mercadoSel}"/>
+                                </p:commandButton>
+                            </p:column>
+
+                            <p:column headerText="Eliminar" width="10%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-delete-forever"
+                                                 title="Eliminar"
+                                                 onclick="PF('dlgEliminarMercado').show()"
+                                                 update="frmEliminarMercado">
+                                    <f:setPropertyActionListener value="#{mercado}" target="#{controladorMercado.mercadoSel}"/>   
+                                </p:commandButton>
+                            </p:column>
+                            <f:facet name="footer">
+                                <p:commandButton value="Nuevo Mercado"
+                                                 icon="ui-icon-plus"
+                                                 onclick="PF('dlgInsertarMercado').show()"
+                                                 update="frmInsertarMercado"/>
+                            </f:facet>
+                        </p:dataTable>
+
+                    </h:form>   
+
+                </div>
+            </div>
+        </div>
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+            <img src="../../../resources/gifs/Loading.gif" alt=""/>                        
+        </p:dialog>   
+        <ui:include src="frmInsertarMercado.xhtml"/>
+        <ui:include src="frmEditarMercado.xhtml"/>
+        <ui:include src="frmEliminarMercado.xhtml"/>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,75 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../../WEB-INF/templates/interna/template.xhtml">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">
+
+                    <h:form id="frmPrincipal">
+                        <p:growl autoUpdate="true" showDetail="true"/>
+                        <p:messages autoUpdate="true" showDetail="true"/>
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+
+                        <p:dataTable id="tblPuesto" value="#{controladorPuesto.lstPuesto}" var="puesto" 
+                                     reflow="true" rows="10" paginator="true"
+                                     rowKey="#{puesto.id_puesto}"
+                                     selection="#{controladorPuesto.puestoSel}"
+                                     selectionMode="single">
+                            <p:column headerText="Id Puesto" width="10%">
+                                <h:outputText value="#{puesto.id_puesto}"/>
+                            </p:column>
+                            <p:column headerText="Numero Puesto">
+                                <h:outputText value="#{puesto.numero_puesto}"/>
+                            </p:column>
+                            <p:column headerText="Valor Tarifa">
+                                <h:outputText value="#{puesto.id_tarifa.valor_tarifa}"/>
+                            </p:column>
+                            <p:column headerText="Mercado">
+                                <h:outputText value="#{puesto.id_mercado.nombre_mercado}"/>
+                            </p:column>
+                            <p:column headerText="Editar" width="10%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-pencil"
+                                                 title="Editar" 
+                                                 onclick="PF('dlgEditarPuesto').show()"
+                                                 update="frmEditarPuesto">
+                                    <f:setPropertyActionListener value="#{puesto}" target="#{controladorPuesto.puestoSel}"/>
+                                </p:commandButton>
+                            </p:column>
+                            <p:column headerText="Eliminar" width="10%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-delete-forever"
+                                                 title="Eliminar"
+                                                 onclick="PF('dlgEliminarPuesto').show()"
+                                                 update="frmEliminarPuesto">
+                                    <f:setPropertyActionListener value="#{puesto}" target="#{controladorPuesto.puestoSel}"/>   
+                                </p:commandButton>
+                            </p:column>
+                            <f:facet name="footer">
+                                <p:commandButton value="Nuevo Puesto"
+                                                 icon="ui-icon-plus"
+                                                 onclick="PF('dlgInsertarPuesto').show()"
+                                                 update="frmInsertarPuesto"/>
+                            </f:facet>
+                        </p:dataTable>
+
+                    </h:form>   
+
+                </div>
+            </div>
+        </div>
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+            <img src="../../../resources/gifs/Loading.gif" alt=""/>                        
+        </p:dialog>   
+
+        <ui:include src="frmInsertarPuesto.xhtml"/>   
+        <ui:include src="frmEditarPuesto.xhtml"/>   
+        <ui:include src="frmEliminarPuesto.xhtml"/>   
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,75 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">
+
+                    <h:form id="frmPrincipal">
+                        <p:growl autoUpdate="true" showDetail="true"/>
+                        <p:messages autoUpdate="true" showDetail="true"/>
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+
+                        <p:dataTable id="tblProblema" value="#{controladorProblema.lstProblema}" var="problema" 
+                                     reflow="true" rows="10" paginator="true"
+                                     rowKey="#{problema.id_problema}"
+                                     selection="#{controladorProblema.problemaSel}"
+                                     selectionMode="single">
+                            <p:column headerText="Id Problema" width="10%">
+                                <h:outputText value="#{problema.id_problema}"/>
+                            </p:column>
+                            <p:column headerText="Descripción">
+                                <h:outputText value="#{problema.descripcion}"/>
+                            </p:column>
+                            <p:column headerText="Nombre Causa">
+                                <h:outputText value="#{problema.fk_causa.nombre_causa}"/>
+                            </p:column>
+                            <p:column headerText="Nombre Involucrado">
+                                <h:outputText value="#{problema.fk_involucrado.nombre_involucrado}"/>
+                            </p:column>
+                            <p:column headerText="Editar" width="10%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-pencil"
+                                                 title="Editar" 
+                                                 onclick="PF('dlgEditarProblema').show()"
+                                                 update="frmEditarProblema">
+                                    <f:setPropertyActionListener value="#{problema}" target="#{controladorProblema.problemaSel}"/>
+                                </p:commandButton>
+                            </p:column>
+                            <p:column headerText="Eliminar" width="10%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-delete-forever"
+                                                 title="Eliminar"
+                                                 onclick="PF('dlgEliminarProblema').show()"
+                                                 update="frmEliminarProblema">
+                                    <f:setPropertyActionListener value="#{problema}" target="#{controladorProblema.problemaSel}"/>   
+                                </p:commandButton>
+                            </p:column>
+                            <f:facet name="footer">
+                                <p:commandButton value="Nuevo Problema"
+                                                 icon="ui-icon-plus"
+                                                 onclick="PF('dlgInsertarProblema').show()"
+                                                 update="frmInsertarProblema"/>
+                            </f:facet>
+                        </p:dataTable>
+
+                    </h:form>   
+
+                </div>
+            </div>
+        </div>
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+            <img src="../../../resources/gifs/Loading.gif" alt=""/>                        
+        </p:dialog>   
+
+        <ui:include src="frmInsertarProblema.xhtml"/>   
+        <ui:include src="frmEditarProblema.xhtml"/>   
+        <ui:include src="frmEliminarProblema.xhtml"/>   
+    </ui:define>
+</ui:composition>

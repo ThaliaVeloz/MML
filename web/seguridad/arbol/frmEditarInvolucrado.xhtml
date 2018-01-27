@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgEditarInvolucrado" widgetVar="dlgEditarInvolucrado" closable="false" modal="true" resizable="true" 
+              header="Editar Involucrado" showEffect="size" hideEffect="size">
+        <h:form id="frmEditarInvolucrado">
+            <h:panelGrid columns="2">
+                <p:outputLabel value="Nombres Involucrado: "/>
+                <p:inputText value="#{controladorInvolucrado.involucradoSel.nombre_involucrado}"
+                             required="true"
+                             requiredMessage="Nombres es Obligatorio"/>
+                <p:outputLabel value="Que Hacer: "/>
+                <p:inputText value="#{controladorInvolucrado.involucradoSel.quehacer}"
+                             required="true"
+                             requiredMessage="Que Hacer es Obligatorio"/>
+                <p:outputLabel value="Interes: "/>
+                <p:inputText value="#{controladorInvolucrado.involucradoSel.interes}"
+                             required="true"
+                             requiredMessage="Interes es Obligatorio"/>
+                <p:outputLabel value="Fortalezas: "/>
+                <p:inputText value="#{controladorInvolucrado.involucradoSel.fortalezas}"
+                             required="true"
+                             requiredMessage="Fartalezas Obligatorio"/>
+                <p:outputLabel value="Limitaciones: "/>
+                <p:inputText value="#{controladorInvolucrado.involucradoSel.limitaciones}"
+                             required="true"
+                             requiredMessage="Limitaciones Obligatorio"/>
+                <p:outputLabel value="Tipo "/>
+                <p:selectOneMenu id="cmdTipo" value="#{controladorInvolucrado.involucradoSel.tipo}" style="width:125px" effect="fold" required="true" requiredMessage="Tipo es obligatorio">
+                    <f:selectItem itemLabel="--Seleccione--" itemValue="" />
+                    <f:selectItem itemLabel="Directo" itemValue="Directo" />
+                    <f:selectItem itemLabel="Indirecto" itemValue="Indirecto" />
+                </p:selectOneMenu>
+            </h:panelGrid>
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{controladorInvolucrado.actualizar()}"
+                                 update="frmPrincipal:tblInvolucrado"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgEditarInvolucrado').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

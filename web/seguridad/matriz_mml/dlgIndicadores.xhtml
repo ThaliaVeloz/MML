@@ -1,0 +1,170 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <p:dialog id="dlgIndicadores" widgetVar="wdlgIndicadores" closable="true" modal="true" resizable="true" 
+              header="Indicadores y Medios Propósito" showEffect="size" hideEffect="size">
+        <h:form id="frmIndicadores">
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+            <p:growl autoUpdate="true" />
+            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                <p:panel header="INDICADORES">
+                    <p:panelGrid columns="6" styleClass="ui-panelgrid-blank form-group">
+                    <h:outputText value="Descripción"/>
+                    <p:inputText   />
+                    <h:outputText value="Cantidad"/>
+                    <p:inputText style="width: 75%" />
+                    <p:selectOneMenu >
+                        <f:selectItem itemValue="#{null}" noSelectionOption="true" itemLabel="Seleccione" />
+                        <f:selectItem itemValue="%" itemLabel="%" />
+                        <f:selectItem itemValue="#" itemLabel="#" />
+                    </p:selectOneMenu>
+
+
+                    <p:commandButton title="Agregar" icon="ui-icon-add" >
+
+                        <f:setPropertyActionListener value="#{proyecto}" target="#{proyectoC.proyectoSel}"/>
+                    </p:commandButton>
+                    </p:panelGrid>
+
+
+
+
+                    <p:dataTable id="tblIndicadores" var="Indicadores" value="#{proyectoC.proyectolist}" rows="5"
+                                 paginator="true"  emptyMessage="No se han encontrado registros" 
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15" reflow="true"
+                                 rowKey="#{proyecto.cod_proyecto}"  selection="#{proyectoC.proyectoSel}">
+
+
+                        <p:column toggleable="false" headerText="Descripción de Indicador"  width="5%" style="text-align: center" >
+                            <h:outputText value="#{proyecto.nombre_proyecto}"/>
+                        </p:column>
+                        <p:column toggleable="false"  headerText="Cantidad" width="5%" style="text-align: center">
+                            <h:outputText value="#{proyecto.descripcion_proyecto}"/>
+                        </p:column>
+
+
+                        <p:column headerText="Operaciones" width="3%" style="text-align: center" visible="false">
+
+                            <p:commandButton title="Editar" icon="ui-icon-pencil"
+                                             onclick="PF('dlgActualizarProyecto').show();"
+                                             >
+
+                                <f:setPropertyActionListener value="#{proyecto}" target="#{proyectoC.proyectoSel}"/>
+                            </p:commandButton>
+
+                            <p:commandButton title="Eliminar" icon="ui-icon-trash"
+                                             onclick="PF('dlgEliminar').show();"
+                                             update="frmEliminar">
+
+                                <f:setPropertyActionListener value="#{usuario}" target="#{propietarioCtrl.usuarioSel}"/>
+
+                            </p:commandButton>
+                        </p:column>
+
+
+                        <p:column headerText="Acciones" width="3%" style="text-align: center" visible="false">
+                            <p:commandButton title=" Ingresar Proposito" icon="ui-icon-description"
+                                             onclick="PF('dlgproposito').show();"
+                                             >
+
+                                <f:setPropertyActionListener value="#{usuario}" target="#{propietarioCtrl.usuarioSel}"/>
+                            </p:commandButton>
+                            <p:commandButton title="Ingresar Indicadores y Medios" icon="ui-icon-attach-file"
+                                             onclick="PF('wdlgIndicadores').show();"
+                                             >
+
+                                <f:setPropertyActionListener value="#{usuario}" target="#{propietarioCtrl.usuarioSel}"/>
+                            </p:commandButton>
+
+
+                        </p:column>
+
+
+                    </p:dataTable>
+                </p:panel>
+                
+                <p:panel header="Medios de Verificación">
+
+                    <p:panelGrid columns="4"  styleClass="ui-panelgrid-blank form-group">
+                        <p:inputText   placeholder="Descripcion"/>
+                         <p:fileUpload fileUploadListener="#{controladorPredio.cargarFicha}"
+                                                                  allowTypes="/(\.|\/)(pdf|doc?x|odt)$/" label="Abrir" mode="advanced"  
+                                                                   uploadLabel="Subir" cancelLabel="Cancelar"   
+                                                                  value="#{controladorPredio.archivoFicha}"
+                                                                  required="true" requiredMessage="Cargar Ficha!!" />
+                        <p:commandButton title="Agregar" icon="ui-icon-add" >
+
+                            <f:setPropertyActionListener value="#{proyecto}" target="#{proyectoC.proyectoSel}"/>
+                        </p:commandButton>
+
+                    </p:panelGrid>
+                    
+
+                    <p:dataTable id="tblMedios" var="Indicadores" value="#{proyectoC.proyectolist}" rows="5"
+                                 paginator="true"  emptyMessage="No se han encontrado registros" 
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15" reflow="true"
+                                 rowKey="#{proyecto.cod_proyecto}"  selection="#{proyectoC.proyectoSel}">
+
+
+
+                        <p:column toggleable="false" headerText="Descripción"  width="5%" style="text-align: center" >
+                            <h:outputText value="#{proyecto.nombre_proyecto}"/>
+                        </p:column>
+                        <p:column toggleable="false"  headerText="Evidencia" width="5%" style="text-align: center">
+                            <h:outputText value="#{proyecto.descripcion_proyecto}"/>
+                        </p:column>
+
+
+                        <p:column headerText="Operaciones" width="3%" style="text-align: center" visible="false">
+
+                            <p:commandButton title="Editar" icon="ui-icon-pencil"
+                                             onclick="PF('dlgActualizarProyecto').show();"
+                                             >
+
+                                <f:setPropertyActionListener value="#{proyecto}" target="#{proyectoC.proyectoSel}"/>
+                            </p:commandButton>
+
+                            <p:commandButton title="Eliminar" icon="ui-icon-trash"
+                                             onclick="PF('dlgEliminar').show();"
+                                             update="frmEliminar">
+
+                                <f:setPropertyActionListener value="#{usuario}" target="#{propietarioCtrl.usuarioSel}"/>
+
+                            </p:commandButton>
+                        </p:column>
+
+
+                        <p:column headerText="Acciones" width="3%" style="text-align: center" visible="false">
+                            <p:commandButton title=" Ingresar Proposito" icon="ui-icon-description"
+                                             onclick="PF('dlgproposito').show();"
+                                             >
+
+                                <f:setPropertyActionListener value="#{usuario}" target="#{propietarioCtrl.usuarioSel}"/>
+                            </p:commandButton>
+                            <p:commandButton title="Ingresar Indicadores y Medios" icon="ui-icon-attach-file"
+                                             onclick="PF('wdlgIndicadores').show();"
+                                             >
+
+                                <f:setPropertyActionListener value="#{usuario}" target="#{propietarioCtrl.usuarioSel}"/>
+                            </p:commandButton>
+
+
+                        </p:column>
+
+
+                    </p:dataTable>
+                </p:panel>
+            </p:panelGrid>> 
+                           
+        </h:form>        
+    </p:dialog>
+
+</ui:composition>
+

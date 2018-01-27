@@ -1,0 +1,229 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">   
+
+                    <h:form id="frmUsuarios">
+                        <div class="main1-box" style="height: 100%"> 
+                            <center>
+                                <p:commandButton value="Nuevo Actividad" icon="ui-icon-plusthick"
+                                                 onclick="PF('dlgRegistrar').show();"/>
+                            </center>
+                            <p:fieldset legend="ACTIVIDADES Y MEDIOS VERIFICACIÓN" toggleable="true" toggleSpeed="500">                   
+                                <center>
+                                    <h:panelGrid columns="2">
+                                        <h:outputText value="Seleccione la Actividad"/>
+                                        <p:selectOneMenu id="cmbModulos" value="#{menuCtrl.idMenuPadre}" required="true" requiredMessage="Seleccione un Item de un menú">
+                                            <f:selectItem itemLabel="Seleccione..." itemValue="#{null}"/>
+                                            <f:selectItems value="#{menuCtrl.lstModulosGruposMenus}" var="modulo"
+                                                           itemLabel="#{modulo.codigoMenu.nombre}" itemValue="#{modulo.codigoMenu.idMenu}"/>
+                                            <p:ajax event="change" listener="#{menuCtrl.obtenerSubmenusDadoPadre()}" 
+                                                    update=""/>
+                                        </p:selectOneMenu> 
+                                    </h:panelGrid>
+                                </center>
+                                <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                                    <br/> 
+
+
+                                    <p:panel>
+                                        <center>
+                                            <b>
+                                                <h3>MEDIOS ACTIVIDADES</h3>
+                                            </b>
+                                        </center>
+                                        <p:dataList value="#{dataListView.cars3}" var="car" type="unordered" itemType="none" rows="1" styleClass="paginated">
+                                            <f:facet name="header">
+                                                MEDIOS
+                                            </f:facet>
+                                            <p:commandLink update=":form:carDetail" oncomplete="PF('carDialog').show()" title="View Detail" styleClass="ui-icon ui-icon-search" style="float:left;margin-right:10px">
+                                                <f:setPropertyActionListener value="#{car}" target="#{dataListView.selectedCar}" />
+                                                <h:outputText value="#{car.brand}, #{car.year}" />
+                                            </p:commandLink>
+                                            <h:outputText value="#{car.brand}, #{car.year}" style="display:inline-block"/>
+
+
+                                        </p:dataList>
+                                        <br/>
+                                        <br/>
+                                        <center>
+                                            <p:commandButton value="Nuevo Adjunto" icon="ui-icon-plusthick"
+                                                             onclick="PF('dlgRegistrarAd').show();"/>
+                                        </center>
+                                    </p:panel>
+                                </p:panelGrid>                                
+                            </p:fieldset>
+
+                        </div> 
+                    </h:form>
+
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">                        
+                        <img src="../../resources/gifs/Loading.gif" alt=""/>
+                    </p:dialog>
+                    <p:dialog  widgetVar="dlgRegistrarIn" modal="true" closable="false" resizable="false"
+                               showEffect="clip" hideEffect="fold">
+                        <h:form id="frmRegistrarIn">
+                            <div class="main1-box" style="height: 100%">                                                                                                           
+                                <p:fieldset legend="INDICADORES COMPONENTE" toggleable="true" toggleSpeed="500">                   
+                                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                        <h:panelGroup id="pnindicadores">
+                                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">                                        
+
+                                                <h:panelGroup>
+                                                    <b>Descripción del Indicador</b>
+                                                    <h:panelGroup styleClass="md-inputfield">
+                                                        <p:inputTextarea rows="4" cols="30" placeholder="Descripcion del Indicador" maxlength="400" 
+                                                                         autoResize="true" />
+                                                    </h:panelGroup>
+
+                                                </h:panelGroup>
+                                                <h:panelGroup>
+                                                    <b></b>
+                                                    <h:panelGroup styleClass="md-inputfield">
+                                                    </h:panelGroup>
+                                                </h:panelGroup>
+                                                <h:panelGroup>
+                                                    <b>CANTIDAD</b>
+                                                    <h:panelGroup styleClass="md-inputfield">
+                                                        <p:inputText  />
+                                                    </h:panelGroup>
+                                                </h:panelGroup>
+
+                                                <h:panelGroup>
+                                                    <b>Tipo Cantidad</b>
+                                                    <h:panelGroup styleClass="md-inputfield">
+                                                        <p:selectOneMenu id="console" value="" style="width:125px">
+                                                            <f:selectItem itemLabel="%" itemValue="%" />
+                                                            <f:selectItem itemLabel="#" itemValue="#" />
+                                                        </p:selectOneMenu>
+                                                    </h:panelGroup>
+                                                </h:panelGroup>
+                                            </p:panelGrid>
+                                        </h:panelGroup>
+                                    </p:panelGrid>
+                                </p:fieldset>
+                            </div> 
+
+                            <p:separator/>
+                            <center>
+                                <p:commandButton value="Aceptar" action="#{propietarioCtrl.insertarUsuario()}" update="frmRegistrarIn"/>
+                                <p:commandButton value="Cancelar" type="button" onclick="PF('dlgRegistrarIn').hide();"/>
+                            </center>  
+
+                        </h:form>
+                    </p:dialog>
+                    
+
+
+                    <p:dialog  widgetVar="dlgRegistrar" modal="true" closable="false" resizable="false"
+                               showEffect="clip" hideEffect="fold">
+                        <h:form id="frmRegistrar">
+                            <div class="main1-box" style="height: 100%">                                                                                                           
+                                <p:fieldset legend="INSERTAR ACTIVIDAD" toggleable="true" toggleSpeed="500">                   
+
+                                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                        <h:panelGroup id="pnlUbicacion">
+                                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">                                        
+
+                                                <h:panelGroup>
+                                                    <b>DESCRIPCIÓN</b>
+                                                    <h:panelGroup styleClass="md-inputfield">
+                                                        <p:inputTextarea rows="4" cols="30" placeholder="Actividades del proyecto" maxlength="400" 
+                                                                         autoResize="true" />
+                                                    </h:panelGroup>
+
+                                                </h:panelGroup>
+                                                <h:panelGroup>
+                                                    <b>COSTO</b>
+                                                    <h:panelGroup styleClass="md-inputfield">
+                                                        <p:inputText  />
+                                                    </h:panelGroup>
+                                                </h:panelGroup>
+
+                                                <h:panelGroup>
+                                                    <b>SUPUESTOS</b>
+                                                    <h:panelGroup styleClass="md-inputfield">
+                                                        <p:inputTextarea rows="4" cols="30" placeholder="Supuestos de la Actividad" maxlength="400" 
+                                                                         autoResize="true" />
+                                                    </h:panelGroup>
+
+
+                                                </h:panelGroup>
+                                            </p:panelGrid>
+                                        </h:panelGroup>
+
+                                    </p:panelGrid>                                
+                                </p:fieldset>
+
+                            </div> 
+                            <br/>
+                            <br/>
+
+                            <p:separator/>
+                            <center>
+                                <p:commandButton value="Aceptar" action="#{propietarioCtrl.insertarUsuario()}" update="frmRegistrar"/>
+                                <p:commandButton value="Cancelar" type="button" onclick="PF('dlgRegistrar').hide();"/>
+                            </center>  
+
+                        </h:form>
+                    </p:dialog>
+
+<p:dialog  widgetVar="dlgRegistrarAd" modal="true" closable="false" resizable="false"
+                               showEffect="clip" hideEffect="fold">
+                        <h:form id="frmRegistrarAd">
+                            <div class="main1-box" style="height: 100%">                                                                                                           
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                    <h:panelGroup id="pnadjunto">
+                                        <div class="ui-g-12">
+                                            <p:fieldset legend="ADJUNTAR MEDIO VERIFICABLE" toggleable="true" toggleSpeed="500">                   
+                                                <p:panelGrid id="displayInsertarDocumento" columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group" >
+                                                    <p:fileUpload fileUploadListener="#{controladorPredio.cargarFicha}"
+                                                                  allowTypes="/(\.|\/)(pdf|doc?x|odt)$/" label="Abrir" mode="advanced"  
+                                                                  update="displayInsertarDocumento otxtFicha" uploadLabel="Subir" cancelLabel="Cancelar"   
+                                                                  value="#{controladorPredio.archivoFicha}"
+                                                                  required="true" requiredMessage="Cargar Ficha!!" />
+
+                                                    <h:panelGroup>
+                                                        <b>Descripción</b>
+                                                        <h:panelGroup styleClass="md-inputfield">
+                                                            <p:inputTextarea rows="4" cols="30" placeholder="Descripcion del Archivo" maxlength="400" 
+                                                                             autoResize="true" />
+                                                        </h:panelGroup>
+
+                                                    </h:panelGroup>
+
+                                                </p:panelGrid>     
+                                                <p:outputLabel id="otxtFicha" value="Path de la ficha: #{controladorPredio.objPredio.fichaAdjunta}"/>
+                                            </p:fieldset>
+                                        </div>    
+                                    </h:panelGroup>
+
+                                </p:panelGrid>
+
+                            </div> 
+                            <p:separator/>
+                            <center>
+                                <p:commandButton value="Aceptar" action="#{propietarioCtrl.insertarUsuario()}" update="frmRegistrarAd"/>
+                                <p:commandButton value="Cancelar" type="button" onclick="PF('dlgRegistrarAd').hide();"/>
+                            </center>  
+
+                        </h:form>
+                    </p:dialog>
+
+
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

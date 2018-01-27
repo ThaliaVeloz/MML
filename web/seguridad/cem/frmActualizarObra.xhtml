@@ -1,0 +1,105 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgEditarObra" widgetVar="dlgEditarObra" closable="false" modal="true" resizable="true" 
+              header="Editar Obra" showEffect="size" hideEffect="size">
+        <h:form id="frmEditarObra">
+
+            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                <h:panelGroup styleClass="md-inputfield">
+                    <h:outputLabel value="#{controladorObras.obraSel.nombreObra}"/>
+                </h:panelGroup>
+            </p:panelGrid>
+            <br/><br/>
+
+            <p:fieldset legend="Datos de la obra" toggleable="true" toggleSpeed="500">
+                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText id="txtMejora"  type="text" value="#{controladorObras.obraSel.nombreObra}" 
+                                         title="Nombre de la obra" required="true" 
+                                         requiredMessage="El nombre de la obra es campo es obligatorio.">                        
+                            </p:inputText>
+                            <label>* Nombre</label>
+                        </h:panelGroup>
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <p:selectOneMenu style="text-align: left; " id="idFormaPago" 
+                                         value="#{controladorObras.obraSel.tipoObra.idTipoObra}" effect="fade" filter="true" 
+                                         filterMatchMode="startsWith" requiredMessage="El tipo de obra es campo obligatorio." required="true">
+                            <f:selectItem itemLabel="* Tipo de obra" itemValue="" />
+                            <f:selectItems value="#{controladorObras.lstTipoObras}" 
+                                           var="tipObra"
+                                           itemLabel="#{tipObra.tipoObra}"
+                                           itemValue="#{tipObra.idTipoObra}" />                        
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText id="txtObservaciones"  value="#{controladorObras.obraSel.valorObra}" 
+                                         title="Costo de la Obra" required="true" 
+                                         requiredMessage="El costo de la obra es campo es obligatorio.">                        
+                            </p:inputText>
+                            <label>* Costo</label>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                </p:panelGrid>
+            </p:fieldset>
+
+            <br/>
+            <p:fieldset legend="Términos de pago" toggleable="true" toggleSpeed="500">
+                <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                    <h:outputLabel value="Municipio (%):"/>
+                    <p:inputText value="#{controladorObras.obraSel.porctMunicipio}" style="width: 50%"/>                     
+                </p:panelGrid>
+                <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                    <h:outputLabel value="Beneficiarios directos (%):"/>
+                    <p:inputText value="#{controladorObras.obraSel.porctBenefDirect}" style="width: 50%"/>  
+                </p:panelGrid>
+                <h:outputLabel value="Basado en: "/>
+                <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                    <h:outputLabel value="Frente (%):"/>
+                    <p:inputText value="#{controladorObras.obraSel.frenteBenefDirect}" style="width: 50%"/>
+                    <h:outputLabel value="Avalúo (%):"/>
+                    <p:inputText value="#{controladorObras.obraSel.avaluoBenefDirect}" style="width: 50%"/>
+                </p:panelGrid>
+                <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                    <h:outputLabel value="Beneficiarios indirectos (%):"/>
+                    <p:inputText value="#{controladorObras.obraSel.porctBenefIndirect}" style="width: 50%"/>  
+                </p:panelGrid>
+                <h:outputLabel value="Basado en: "/>
+                <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                    <h:outputLabel value="Frente (%):"/>
+                    <p:inputText value="#{controladorObras.obraSel.frentBenefIndirect}" style="width: 50%"/>
+                    <h:outputLabel value="Avalúo (%):"/>
+                    <p:inputText value="#{controladorObras.obraSel.avaluoBenefIndirect}" style="width: 50%"/>
+                </p:panelGrid>
+            </p:fieldset>
+
+            <p:fieldset legend="Datos factor K" toggleable="true" toggleSpeed="500">
+                <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                    <h:outputLabel value="Área lote medio:"/>
+                    <p:inputText value="#{controladorObras.obraSel.areaLoteMedio}" style="width: 50%"/>
+                    <h:outputLabel value="Área constr. media:"/>
+                    <p:inputText value="#{controladorObras.obraSel.areaConstrucMedia}" style="width: 50%"/>
+                </p:panelGrid>
+            </p:fieldset>
+
+
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{controladorObras.actualizarObra()}"
+                                 update="frmObras:tblObras"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgEditarObra').hide()"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

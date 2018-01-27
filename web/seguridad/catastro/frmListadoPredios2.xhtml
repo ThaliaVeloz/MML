@@ -1,0 +1,110 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                    
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <ui:define name="content">
+        <h:form id="frmPredios">
+            <p:growl autoUpdate="true"/>
+            <p:messages autoUpdate="true"/>
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+            <div class="ui-g-12">
+                <div class="card">                    
+                    <p:fieldset legend="Búsqueda" toggleable="true" toggleSpeed="500">
+                        <center>
+                            <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                <h:outputLabel value="Criterio de búsqueda:"/>
+                                <p:inputText value="#{listadoPrediosCtrl.txtCriterio}"/>
+                                <p:commandButton icon="ui-icon-search" value="Buscar"
+                                                 action="#{listadoPrediosCtrl.encontrarPredioDadoParametro()}"
+                                                 update="frmPredios:tblPredios"/>
+                                <p:commandButton icon="ui-icon-refresh" value="Limpiar"
+                                                 action="#{listadoPrediosCtrl.obtenerPredios()}"
+                                                 update="frmPredios:tblPredios" />
+                            </p:panelGrid>                            
+                        </center>                            
+                    </p:fieldset>
+                </div>
+            </div>
+            <br/>
+            <div class="ui-g-12">
+                <center>                    
+                    <p:dataTable id="tblPredios" var="predio" value="#{controladorPredio.lstPredios}" rows="5"
+                                 paginator="true"  emptyMessage="No se han encontrado registros" 
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15" reflow="true" rowKey="#{predio.idPredio}"
+                                 editable="true" selection="#{controladorPredio.predioSel}" selectionMode="single">
+                        <f:facet name="header">
+                            <p:outputLabel value="Listado de predios"/>
+                        </f:facet>
+                        <p:column headerText="Clave Catastral" width="8%" style="text-align: center">
+                            <h:outputText value="#{predio.claveCatastral}"/>
+                        </p:column>
+                        <p:column headerText="Propietario" width="8%" style="text-align: center">
+                            <h:outputText value="#{predio.propietario.apellidos} #{predio.propietario.nombres}"/>
+                        </p:column>                        
+                        <p:column headerText="Parroquia" width="8%" style="text-align: center">
+                            <h:outputText value="#{predio.idParroquia.nombre}"/>
+                        </p:column>
+                        <p:column headerText="Dominio" width="8%" style="text-align: center">
+                            <h:outputText value="#{predio.dominio.dominio}"/>
+                        </p:column>
+                        <p:column headerText="Dirección" width="12%" style="text-align: center">
+                            <h:outputText value="#{predio.callePrinc} y #{predio.calleSecund}, #{predio.numCasa}"/>
+                        </p:column>
+                        <p:column headerText="Bloques" width="5%" style="text-align: center">
+                            <p:commandButton title="Ver Bloques" icon="ui-icon-folder-open"
+                                             onclick="PF('wdlgBloques').show()"
+                                             action="#{listadoPrediosCtrl.obtenerBloquesDadoPredio()}"
+                                             update="frmBloques">
+                                <f:setPropertyActionListener value="#{predio}" target="#{listadoPrediosCtrl.objPredio}"/>
+                            </p:commandButton>
+                        </p:column>
+
+                        <p:column headerText="Reporte" width="5%" style="text-align: center" exportable="false">
+                            <h:commandLink id="reportDirigentesPDF" target="_blank"
+                                           actionListener="#{listadoPrediosCtrl.verReportePdfPorId()}" title="Imprimir Ficha">
+                                <img src="../../resources/imagenes/impresora.png" alt="" width="50%"/>
+                                <f:setPropertyActionListener value="#{predio}" target="#{listadoPrediosCtrl.objPredio}"/>
+                            </h:commandLink>
+                        </p:column>
+
+                        <c:choose>
+                            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolCatastro}">
+                                <p:column headerText="Editar" width="5%" style="text-align: center">
+                                    <p:commandButton icon="ui-icon-pencil" title="Editar" onclick="PF('wdlgActualizarPredios').show()"
+                                                     update="actualizarPredio">
+                                        <f:setPropertyActionListener value="#{predio}" 
+                                                                     target="#{controladorPredio.predioSel}"/>
+
+                                    </p:commandButton>
+
+                                </p:column>
+                                <p:column headerText="Eliminar" width="5%" style="text-align: center">
+                                    <p:commandButton icon="ui-icon-trash" title="Eliminar" onclick="PF('wdlgEliminarPredios').show()"
+                                                     update="eliminarPredio">
+                                        <f:setPropertyActionListener value="#{predio}" 
+                                                                     target="#{controladorPredio.predioSel}"/>
+                                    </p:commandButton>
+                                </p:column>
+                            </c:when>
+                        </c:choose>                        
+                    </p:dataTable>
+                </center>
+            </div>
+
+        </h:form>
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">                        
+            <img src="../../resources/gifs/Loading.gif" alt=""/>
+        </p:dialog>
+
+        <ui:include src="frmBloques.xhtml"/>    
+        <ui:include src="frmActualizarPredios.xhtml"/> 
+        <ui:include src="frmEliminarPredios.xhtml"/>
+
+    </ui:define>   
+</ui:composition>

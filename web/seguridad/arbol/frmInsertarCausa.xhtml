@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgInsertarCausa" widgetVar="dlgInsertarCausa" closable="false" modal="true" resizable="true" 
+              header="Registrar Comerciante" showEffect="size" hideEffect="size">
+        <h:form id="frmInsertarCausa">
+            <p:messages autoUpdate="true"/>
+            <p:panel>
+                <h:panelGrid columns="2" > 
+                    <p:outputLabel value="Nombre causa: "/>
+                    <p:inputText value="#{controladorCausa.objCausa.nombre_causa}"
+                                 required="true"
+                                 requiredMessage="Nombre Obligatorio"/>
+                    <p:outputLabel value="Titulo causa: "/>
+                    <p:inputText value="#{controladorCausa.objCausa.titulo}"
+                                 required="true"
+                                 requiredMessage="Titulo Obligatorio"/>
+                    <p:outputLabel value="Sub causa: "/>
+                <p:selectOneMenu id="cmbSubActividades" 
+                                 value="#{controladorCausa.objCausa.id_causa_rec}" 
+                                     effect="fold" required="true" requiredMessage="La subactivida es obligatoria">
+                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}"/>
+                        <f:selectItems value="#{controladorCausa.lstCausas}"
+                                       var="sub" itemLabel="#{sub.nombre_causa}" itemValue="#{sub.id_causa}"/>
+                    </p:selectOneMenu>              
+                </h:panelGrid>
+            </p:panel>
+
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{controladorCausa.insertar()}"
+                                 update="frmPrincipal:tblCausa"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgInsertarCausa').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgInsertarProblema" widgetVar="dlgInsertarProblema" closable="false" modal="true" resizable="true" 
+              header="Registrar Problema" showEffect="size" hideEffect="size">
+        <h:form id="frmInsertarProblema">
+            <p:messages autoUpdate="true"/>
+            <p:panel>
+                <h:panelGrid columns="2" >
+                    <p:outputLabel value="Descripción: "/>
+                    <p:inputText value="#{controladorProblema.objProblema.descripcion}"
+                                     required="true"
+                                     requiredMessage="La descripción es obligatoria"/>
+                    <p:outputLabel value="Causas"/>
+                    <p:selectOneMenu id="cmbCausa" 
+                                     value="#{controladorProblema.objProblema.fk_causa.nombre_causa}" 
+                                     effect="fold" required="true" requiredMessage="La Causa es obligatoria">
+                        <f:selectItem itemLabel="--Seleccione --" itemValue="#{null}"/>
+                        <f:selectItems value="#{controladorProblema.lstCausa}"
+                                       var="sub" itemLabel="#{sub.nombre_causa}" itemValue="#{sub.id_causa}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Involucrado"/>
+                    <p:selectOneMenu id="cmbInvolucrado" 
+                                     value="#{controladorProblema.objProblema.id_problema}" 
+                                     effect="fold" required="true" requiredMessage="El Involucrado es obligatoria">
+                        <f:selectItem itemLabel="--Seleccione --" itemValue="#{null}"/>
+                        <f:selectItems value="#{controladorProblema.lstInvolucrado}"
+                                       var="sub" itemLabel="#{sub.nombre_involucrado}" itemValue="#{sub.id_involucrado}"/>
+                    </p:selectOneMenu>
+
+                </h:panelGrid>
+            </p:panel>
+
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{controladorProblema.insertar()}"
+                                 update="frmPrincipal:tblProblema"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgInsertarProblema').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

@@ -1,0 +1,368 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">                   
+                    <h:form id="frmUsuarios">
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                        <p:growl autoUpdate="true" />
+                        <br/> 
+                        <p:panel>
+                            <center>
+                                <b>
+                                    <h3>REGISTRAR PROYECTO</h3>
+                                </b>
+                            </center>
+                            <br/> 
+                            <br/> 
+                            <br/> 
+                            <p:dataTable id="tblUsuarios" var="proyecto" value="#{proyectoC.proyectolist}" rows="15"
+                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="20,25,30,35" reflow="true"
+                                         rowKey="#{proyecto.cod_proyecto}"  selection="#{proyectoC.proyectoSel}">
+
+                                <f:facet name="header">
+                                    <h:outputLabel value="Proyectos"/>
+                                    <p:commandButton id="toggler" type="button" value="Mostrar" style="float:right" icon="ui-icon-list" />
+                                    <p:columnToggler datasource="tblUsuarios" trigger="toggler" />
+                                </f:facet>
+                                <p:column toggleable="false" headerText="Código"  width="5%" style="text-align: center" >
+                                    <h:outputText value="#{proyecto.cod_proyecto}"/>
+                                </p:column>
+                                <p:column toggleable="false" headerText="Nombre"  width="5%" style="text-align: center" >
+                                    <h:outputText value="#{proyecto.nombre_proyecto}"/>
+                                </p:column>
+                                <p:column toggleable="false"  headerText="Descripción" width="5%" style="text-align: center">
+                                    <h:outputText value="#{proyecto.descripcion_proyecto}"/>
+                                </p:column>
+                                <p:column toggleable="false" headerText="Fin" width="5%" style="text-align: center">
+                                    <h:outputText value="#{proyecto.fin_proyecto}"/>
+                                </p:column> 
+
+                                <p:column  toggleable="false" headerText="Operaciones" width="3%" style="text-align: center">
+
+                                    <p:commandButton title="Editar" icon="ui-icon-pencil"
+                                                     onclick="PF('dlgActualizarProyecto').show();"
+                                                     update="frmActualizarProyecto">
+
+                                        <f:setPropertyActionListener value="#{proyecto}" target="#{proyectoC.proyectoSel}"/>
+                                    </p:commandButton>
+
+                                    <p:commandButton title="Eliminar" icon="ui-icon-trash"
+                                                     onclick="PF('dlgEliminar').show();"
+                                                     update="frmEliminar">
+
+                                        <f:setPropertyActionListener value="#{usuario}" target="#{propietarioCtrl.usuarioSel}"/>
+
+                                    </p:commandButton>
+                                </p:column>
+
+
+                                <p:column headerText="Proposito" width="3%" style="text-align: center" visible="false">
+                                    <p:commandButton title=" Ingresar Proposito" icon="ui-icon-description"
+                                                     onclick="PF('dlgproposito').show();" update="frmProposito"   >
+
+                                        <f:setPropertyActionListener value="#{proyecto}" target="#{proyectoC.proyectoSel}"/>
+                                    </p:commandButton>
+
+                                    <p:commandButton title="Ingresar Indicadores y Medios" icon="ui-icon-attach-file"
+                                                     onclick="PF('wdlgIndicadores').show();"
+                                                     >
+
+                                        <f:setPropertyActionListener value="#{usuario}" target="#{propietarioCtrl.usuarioSel}"/>
+                                    </p:commandButton>
+                                    <!--
+                                    <p:commandButton title="Componentes" value="Componentes"
+                                                     onclick="PF('dlgActualizar').show();"
+                                                     update="frmActualizar">
+
+                                        <f:setPropertyActionListener value="#{usuario}" target="#{propietarioCtrl.usuarioSel}"/>
+                                    </p:commandButton>
+                                    <p:commandButton title="Actividades" value="Actividades"
+                                                     onclick="PF('dlgActualizar').show();"
+                                                     update="frmActualizar">
+
+                                        <f:setPropertyActionListener value="#{usuario}" target="#{propietarioCtrl.usuarioSel}"/>
+                                    </p:commandButton>
+                                    -->
+
+                                </p:column>
+
+
+
+
+                                <f:facet name="footer">
+                                    <p:commandButton value="Nuevo Proyecto" icon="ui-icon-plusthick"
+                                                     onclick="PF('dlgRegistrar').show();"/>
+                                </f:facet>
+                            </p:dataTable> 
+                        </p:panel>  
+
+
+                    </h:form>
+
+
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">                        
+                        <img src="../../resources/gifs/Loading.gif" alt=""/>
+                    </p:dialog>
+
+                    <p:dialog  widgetVar="dlgRegistrar" modal="true" closable="true" resizable="false"
+                               showEffect="clip" hideEffect="fold">
+                        <h:form id="frmRegistrar">
+                            <div class="main1-box" style="height: 100%">                                                                                                           
+                                <p:fieldset legend="INSERTAR PROYECTO" toggleable="true" toggleSpeed="500">                   
+                                    <h:panelGroup id="pnlUbicacion1">
+                                        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">                                        
+                                            <h:panelGroup>
+                                                <b>NOMBRE</b>
+                                                <h:panelGroup styleClass="md-inputfield">
+                                                    <p:inputTextarea rows="3" cols="30" placeholder="Ingrese el nombre del proyecto" maxlength="400" 
+                                                                     autoResize="true" 
+                                                                     value="#{proyectoC.proyecto.nombre_proyecto}" required="true"/>
+                                                </h:panelGroup>
+                                            </h:panelGroup>
+                                            <h:panelGroup>
+                                                <b>DESCRIPCION</b>
+                                                <h:panelGroup styleClass="md-inputfield">
+                                                    <p:inputTextarea rows="3" cols="30" placeholder="Ingrese la descripción del proyecto" maxlength="400" 
+                                                                     autoResize="true" 
+                                                                     value="#{proyectoC.proyecto.descripcion_proyecto}" required="true"/>
+                                                </h:panelGroup>
+                                            </h:panelGroup>
+
+                                            <h:panelGroup>
+                                                <b>FIN</b>
+                                                <h:panelGroup styleClass="md-inputfield">
+                                                    <p:inputTextarea rows="3" cols="30" placeholder="Ingrese el fin del proyecto" maxlength="400" 
+                                                                     autoResize="true" 
+                                                                     value="#{proyectoC.proyecto.fin_proyecto}" required="true"/>
+                                                </h:panelGroup>
+                                            </h:panelGroup>
+                                        </p:panelGrid>
+                                    </h:panelGroup>
+
+
+                                </p:fieldset>
+
+                            </div> 
+                            <br/>
+                            <br/>
+
+
+
+                            <br/>
+                            <br/>
+                            <p:separator/>
+                            <center>
+                                <p:commandButton value="Aceptar" action="#{proyectoC.ingresarProyecto()}" 
+                                                 update="frmUsuarios:tblUsuarios,frmRegistrar,@form "/>
+                                <p:commandButton value="Cancelar" type="button" onclick="PF('dlgRegistrar').hide();"/>
+                            </center>  
+
+                        </h:form>
+                    </p:dialog>
+
+                    <p:dialog  widgetVar="dlgproposito" modal="true" closable="true" resizable="false"
+                               showEffect="clip" hideEffect="fold">
+                        <h:form id="frmProposito">
+                            <div class="main1-box" style="height: 100%">                                                                                                           
+                                <p:panelGrid columns="2">
+                                    <h:panelGroup id="pnlUbicacion1">
+                                        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">                                        
+                                            <h:panelGroup>
+                                                <b>DESCRIPCIÓN</b>
+                                                <h:panelGroup styleClass="md-inputfield">
+                                                    <p:inputTextarea rows="3" cols="30" placeholder="Ingrese el proposito" maxlength="400" 
+                                                                     autoResize="true" 
+                                                                     value="#{proyectoC.proposito.descripcion_proposito}" required="true"/>
+                                                </h:panelGroup>
+                                            </h:panelGroup>
+                                            <h:panelGroup>
+                                                <b>SUPUESTO</b>
+                                                <h:panelGroup styleClass="md-inputfield">
+                                                    <p:inputTextarea rows="3" cols="30" placeholder="Ingrese la descripción del proposito" maxlength="400" 
+                                                                     autoResize="true" 
+                                                                     value="#{proyectoC.proposito.supuesto_proposito}" required="true"/>
+                                                </h:panelGroup>
+                                            </h:panelGroup>
+
+                                            <h:panelGroup>
+                                                <b>COSTO</b>
+                                                <h:panelGroup styleClass="md-inputfield">
+                                                    <p:inputTextarea rows="3" cols="30" placeholder="Ingrese el costo" maxlength="400" 
+                                                                     autoResize="true" 
+                                                                     value="#{proyectoC.proposito.costo_proposito}" required="true"/>
+                                                </h:panelGroup>
+                                            </h:panelGroup>
+                                        </p:panelGrid>
+                                        <center>
+                                            <p:commandButton title="Registrar" icon="ui-icon-save" action="#{proyectoC.ingresarProposito()}" 
+                                                             update="frmUsuarios:tblUsuarios,
+                                                             frmRegistrar,
+                                                             "/>
+                                            <p:commandButton title="Editar" icon="ui-icon-pencil" action="#{proyectoC.ingresarProyecto()}" 
+                                                             update="frmUsuarios:tblUsuarios,
+                                                             frmRegistrar,
+                                                             "/>
+                                            <p:commandButton title="Eliminar" icon="ui-icon-delete" type="button" onclick="PF('dlgRegistrar').hide();"/>
+                                        </center>  
+                                    </h:panelGroup>
+
+                                </p:panelGrid>
+
+                            </div> 
+
+
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog  widgetVar="dlgRegistrarIn" modal="true" closable="false" resizable="false"
+                               showEffect="clip" hideEffect="fold">
+                        <h:form id="frmRegistrarIn">
+                            <div class="main1-box" style="height: 100%">                                                                                                           
+                                <p:fieldset legend="INDICADORES PROPÓSITO" toggleable="true" toggleSpeed="500">                   
+                                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                        <h:panelGroup id="pnindicadores">
+                                            <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group">                                        
+
+                                                <h:panelGroup>
+                                                    <b>Descripción del Indicador</b>
+                                                    <h:panelGroup styleClass="md-inputfield">
+                                                        <p:inputTextarea rows="4" cols="30" placeholder="Descripcion del Indicador" maxlength="400" 
+                                                                         autoResize="true" />
+                                                    </h:panelGroup>
+
+                                                </h:panelGroup>
+                                                <h:panelGroup>
+                                                    <b></b>
+                                                    <h:panelGroup styleClass="md-inputfield">
+                                                    </h:panelGroup>
+                                                </h:panelGroup>
+                                                <h:panelGroup>
+                                                    <b>CANTIDAD</b>
+                                                    <h:panelGroup styleClass="md-inputfield">
+                                                        <p:inputText  />
+                                                    </h:panelGroup>
+                                                </h:panelGroup>
+
+                                                <h:panelGroup>
+                                                    <b>Tipo Cantidad</b>
+                                                    <h:panelGroup styleClass="md-inputfield">
+                                                        <p:selectOneMenu id="console" value="" style="width:125px">
+                                                            <f:selectItem itemLabel="%" itemValue="%" />
+                                                            <f:selectItem itemLabel="#" itemValue="#" />
+                                                        </p:selectOneMenu>
+                                                    </h:panelGroup>
+
+
+                                                </h:panelGroup>
+
+
+                                            </p:panelGrid>
+                                        </h:panelGroup>
+                                    </p:panelGrid>
+                                </p:fieldset>
+                            </div> 
+
+                            <p:separator/>
+                            <center>
+                                <p:commandButton value="Aceptar" action="#{propietarioCtrl.insertarUsuario()}" update="frmRegistrarIn"/>
+                                <p:commandButton value="Cancelar" type="button" onclick="PF('dlgRegistrarIn').hide();"/>
+                            </center>  
+
+                        </h:form>
+                    </p:dialog>
+
+
+                    <p:dialog  widgetVar="dlgActualizarProyecto" modal="true" closable="false" resizable="false"
+                               showEffect="clip" hideEffect="fold" >
+                        <h:form id="frmActualizarProyecto">
+                            <p:panel header="ACTUALIZAR PROYECTO"> 
+
+                                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />     
+                                <h:panelGrid columns="2">
+                                    <label>Nombre</label>
+                                    <h:panelGroup styleClass="md-inputfield">
+
+                                        <p:inputTextarea rows="5" cols="30"  autoResize="false" value="#{proyectoC.proyectoSel.nombre_proyecto}"/>
+
+                                    </h:panelGroup>
+                                    <label>Descripción</label>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputTextarea rows="5" cols="30"  autoResize="false" value="#{proyectoC.proyectoSel.descripcion_proyecto}"/>
+
+
+                                    </h:panelGroup>   
+                                    <label>Fin</label>
+                                    <h:panelGroup styleClass="md-inputfield">
+
+                                        <p:inputTextarea rows="5" cols="30"  autoResize="false" value="#{proyectoC.proyectoSel.fin_proyecto}" />
+
+                                    </h:panelGroup>
+
+                                </h:panelGrid>
+                                <p:separator/>
+                                <center>
+                                    <p:commandButton value="Aceptar"  action="#{proyectoC.actualizarProyecto()}" update="frmUsuarios:tblUsuarios,frmActualizarProyecto"/>
+                                    <p:commandButton value="Cancelar" type="button" onclick="PF('dlgActualizarProyecto').hide();"/>
+                                </center>
+
+                            </p:panel>
+
+                        </h:form>
+
+                    </p:dialog>
+
+                    <p:dialog header="Esta Seguro que Desea Eliminar el Registro?" widgetVar="dlgEliminar" modal="true" closable="false" resizable="false"
+                              showEffect="clip" hideEffect="fold">
+                        <h:form id="frmEliminar">
+                            <p:panel header="ELIMINAR PROYECTO"> 
+
+                                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />     
+                                <h:panelGrid columns="2">
+                                    <label>Nombre</label>
+                                    <h:panelGroup styleClass="md-inputfield">
+
+                                        <p:inputTextarea rows="5" cols="30"  autoResize="false" />
+
+                                    </h:panelGroup>
+                                    <label>Descripción</label>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputTextarea rows="5" cols="30"  autoResize="false" />
+
+
+                                    </h:panelGroup>   
+                                    <label>Fin</label>
+                                    <h:panelGroup styleClass="md-inputfield">
+
+                                        <p:inputTextarea rows="5" cols="30"  autoResize="false" />
+
+                                    </h:panelGroup>
+
+                                </h:panelGrid>
+                                <p:separator/>
+                                <center>
+                                    <p:commandButton value="Aceptar"  action="#{propietarioCtrl.eliminarUsuario()}" update="frmUsuarios:tblUsuarios,frmEliminar"/>
+                                    <p:commandButton value="Cancelar" type="button" onclick="PF('dlgEliminar').hide();"/>
+                                </center>
+                            </p:panel>
+
+                        </h:form>
+                    </p:dialog>                   
+                </div>
+            </div>
+        </div>
+
+
+        <ui:include src="dlgIndicadores.xhtml"/> 
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,74 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../../WEB-INF/templates/interna/template.xhtml">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">
+
+                    <h:form id="frmPrincipal">
+                        <p:growl autoUpdate="true" showDetail="true"/>
+                        <p:messages autoUpdate="true" showDetail="true"/>
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+                        <center>
+                            <h:panelGrid columns="4">
+                                <p:outputLabel value="Cedula"/>
+                                <p:inputText value="#{controladorSeccion.estado}"/>
+                                <p:commandButton value="Buscar"
+                                                 icon="ui-icon-search"
+                                                 action="#{controladorSeccion.obtenerSeccionesDadoEstado()}"
+                                                 update="frmPrincipal:tblContrato"/>
+                                <p:commandButton value="Limpiar"
+                                                 icon="ui-icon-refresh"
+                                                 action="#{controladorSeccion.obtenerSecciones()}"
+                                                 update="frmPrincipal:tblContrato"/>
+                            </h:panelGrid>
+                        </center>
+                        <p:dataTable id="tblContrato" value="#{controladorContratoVista.lstContrato}" var="contrato" 
+                                     reflow="true" rows="10" paginator="true"
+                                     rowKey="#{contrato.id_contrato}"
+                                     selection="#{controladorContratoVista.contratoSel}"
+                                     selectionMode="single">
+                            <p:column headerText="Id Contrato" width="10%">
+                                <h:outputText value="#{contrato.id_contrato}"/>
+                            </p:column>
+                            <p:column headerText="Fecha Inicio">
+                                <h:outputText value="#{contrato.fecha_fin}"/>
+                            </p:column>
+                            <p:column headerText="Fecha Fin">
+                                <h:outputText value="#{contrato.fecha_fin}"/>
+                            </p:column>
+                            <p:column headerText="Comerciante">
+                                <h:outputText value="#{contrato.id_comerciante.nombres_c}"/>
+                            </p:column>
+                            <p:column headerText="Puesto">
+                                <h:outputText value="#{contrato.id_puesto.numero_puesto}"/>
+                            </p:column>
+                            <p:column headerText="Actividad">
+                                <h:outputText value="#{contrato.idActividad.descripcion}"/>
+                            </p:column>
+                        </p:dataTable>
+
+                    </h:form>   
+
+                </div>
+            </div>
+        </div>
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+            <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+        </p:dialog>   
+
+
+
+        <ui:include src="frmInsertarContrato.xhtml"/>   
+        <ui:include src="frmEditarContrato.xhtml"/>   
+        <ui:include src="frmEliminarContrato.xhtml"/>   
+    </ui:define>
+</ui:composition>

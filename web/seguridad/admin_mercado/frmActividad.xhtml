@@ -1,0 +1,72 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">
+
+                    <h:form id="frmPrincipal">
+                        <p:growl autoUpdate="true" showDetail="true"/>
+                        <p:messages autoUpdate="true" showDetail="true"/>
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+
+                        <p:dataTable id="tblActividad" value="#{controladorActividad.lstActividades}" var="actividad" 
+                                     reflow="true" rows="10" paginator="true"
+                                     rowKey="#{actividad.idActividad}"
+                                     selection="#{controladorActividad.actividadSel}"
+                                     selectionMode="single">
+                            <p:column headerText="Id Actividad" width="10%">
+                                <h:outputText value="#{actividad.idActividad}"/>
+                            </p:column>
+                            <p:column headerText="Actvidad">
+                                <h:outputText value="#{actividad.descripcion}"/>
+                            </p:column>
+                            <p:column headerText="Sub actvidad">
+                                <h:outputText value="#{actividad.subActividad.subActividad}"/>
+                            </p:column>
+                            <p:column headerText="Editar" width="10%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-pencil"
+                                                 title="Editar" 
+                                                 onclick="PF('dlgEditarActividad').show()"
+                                                 update="frmEditarActividad">
+                                    <f:setPropertyActionListener value="#{actividad}" target="#{controladorActividad.actividadSel}"/>
+                                </p:commandButton>
+                            </p:column>
+                            <p:column headerText="Eliminar" width="10%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-delete-forever"
+                                                 title="Eliminar"
+                                                 onclick="PF('dlgEliminarActividad').show()"
+                                                 update="frmEliminarActividad">
+                                    <f:setPropertyActionListener value="#{actividad}" target="#{controladorActividad.actividadSel}"/>   
+                                </p:commandButton>
+                            </p:column>
+                            <f:facet name="footer">
+                                <p:commandButton value="Nueva actividad"
+                                                 icon="ui-icon-plus"
+                                                 onclick="PF('dlgInsertarActividad').show()"
+                                                 update="frmInsertarActividad"/>
+                            </f:facet>
+                        </p:dataTable>
+
+                    </h:form>   
+
+                </div>
+            </div>
+        </div>
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+            <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+        </p:dialog>   
+
+        <ui:include src="frmInsertarActividad.xhtml"/>   
+        <ui:include src="frmEditarActividad.xhtml"/>   
+        <ui:include src="frmEliminarActividad.xhtml"/>   
+    </ui:define>
+</ui:composition>

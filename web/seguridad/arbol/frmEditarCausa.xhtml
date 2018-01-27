@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgEditarCausa" widgetVar="dlgEditarCausa" closable="false" modal="true" resizable="true" 
+              header="Editar Causa" showEffect="size" hideEffect="size">
+        <h:form id="frmEditarCausa">
+            <h:panelGrid columns="2">
+                <p:outputLabel value="Id Causa:"/>
+                <p:inputText value="#{controladorCausa.causaSel.id_causa}"
+                             required="true"
+                             requiredMessage="Identificador es obligatoria"/>
+                <p:outputLabel value="Nombre Causa: "/>
+                <p:inputText value="#{controladorCausa.causaSel.nombre_causa}"
+                             required="true"
+                             requiredMessage="Nombre es Obligatorio"/>
+                <p:outputLabel value="Titulo: "/>
+                <p:inputText value="#{controladorCausa.causaSel.titulo}"
+                             required="true"
+                             requiredMessage="Titulo es Obligatorio"/>
+                <p:outputLabel value="Causa padre: "/>
+                <p:selectOneMenu id="cmbSubActividades" 
+                                 value="#{controladorCausa.causaSel.id_causa_rec}" 
+                                     effect="fold" required="true" requiredMessage="La subactivida es obligatoria">
+                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}"/>
+                        <f:selectItems value="#{controladorCausa.lstCausas}"
+                                       var="sub" itemLabel="#{sub.nombre_causa}" itemValue="#{sub.id_causa}"/>
+                    </p:selectOneMenu>
+            </h:panelGrid>
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{controladorCausa.actualizar()}"
+                                 update="frmPrincipal:tblCausa"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgEditarCausa').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

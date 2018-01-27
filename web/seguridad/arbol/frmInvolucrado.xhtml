@@ -1,0 +1,87 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">
+
+                    <h:form id="frmPrincipal">
+                        <p:growl autoUpdate="true" showDetail="true"/>
+                        <p:messages autoUpdate="true" showDetail="true"/>
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+
+                        <p:dataTable id="tblInvolucrado" value="#{controladorInvolucrado.lstInvolucrado}" var="involucrado" 
+                                     reflow="true" rows="10" paginator="true"
+                                     rowKey="#{involucrado.id_involucrado}"
+                                     selection="#{controladorInvolucrado.involucradoSel}"
+                                     selectionMode="single">
+                            <p:column headerText="Id Involucrado" width="10%">
+                                <h:outputText value="#{involucrado.id_involucrado}"/>
+                            </p:column>
+                            <p:column headerText="Nombre Involucrado" width="10%">
+                                <h:outputText value="#{involucrado.nombre_involucrado}"/>
+                            </p:column>
+                            <p:column headerText="Que Hacer" width="10%">
+                                <h:outputText value="#{involucrado.quehacer}"/>
+                            </p:column>
+                            <p:column headerText="Interes" width="10%">
+                                <h:outputText value="#{involucrado.interes}"/>
+                            </p:column>
+                            <p:column headerText="Fortalezas" width="10%">
+                                <h:outputText value="#{involucrado.fortalezas}"/>
+                            </p:column>
+                            <p:column headerText="Limitaciones" width="10%">
+                                <h:outputText value="#{involucrado.limitaciones}"/>
+                            </p:column>
+                            <p:column headerText="Tipo" width="10%">
+                                <h:outputText value="#{involucrado.tipo}"/>
+                            </p:column>
+                            
+                            <p:column headerText="Editar" width="10%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-pencil"
+                                                 title="Editar" 
+                                                 onclick="PF('dlgEditarInvolucrado').show()"
+                                                 update="frmEditarInvolucrado">
+                                    <f:setPropertyActionListener value="#{involucrado}" target="#{controladorInvolucrado.involucradoSel}"/>
+                                </p:commandButton>
+                            </p:column>
+                            <p:column headerText="Eliminar" width="10%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-delete-forever"
+                                                 title="Eliminar"
+                                                 onclick="PF('dlgEliminarInvolucrado').show()"
+                                                 update="frmEliminarInvolucrado">
+                                    <f:setPropertyActionListener value="#{involucrado}" target="#{controladorInvolucrado.involucradoSel}"/>   
+                                </p:commandButton>
+                            </p:column>
+                            <f:facet name="footer">
+                                <p:commandButton value="Nuevo Involucrado"
+                                                 icon="ui-icon-plus"
+                                                 onclick="PF('dlgInsertarInvolucrado').show()"
+                                                 update="frmInsertarInvolucrado"/>
+                            </f:facet>
+                        </p:dataTable>
+
+                    </h:form>   
+
+                </div>
+            </div>
+        </div>
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+            <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+        </p:dialog>   
+
+
+
+        <ui:include src="frmInsertarInvolucrado.xhtml"/>   
+        <ui:include src="frmEditarInvolucrado.xhtml"/>   
+        <ui:include src="frmEliminarInvolucrado.xhtml"/>   
+    </ui:define>
+</ui:composition>

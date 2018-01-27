@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <p:dialog id="dlgEditarTarifa" widgetVar="dlgEditarTarifa" closable="false" modal="true" resizable="true" 
+              header="Editar Tarifa" showEffect="size" hideEffect="size">
+        <h:form id="frmEditarTarifa">
+            <h:panelGrid columns="2">
+                <p:outputLabel value="Valor Tarifa"/>
+                <p:inputText value="#{controladorTarifa.tarifaSel.valor_tarifa}"
+                             required="true"
+                             requiredMessage="Obligatorio"/>
+                <p:outputLabel value="Tarifa"/>
+
+                <p:selectOneMenu id="cmbSeccion" 
+                                 value="#{controladorTarifa.tarifaSel.idSeccion.idSeccion}" 
+                                 effect="fold" required="true" requiredMessage="La seccion es obligatoria">
+                    <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                    <f:selectItems value="#{controladorTarifa.lstSeccion}"
+                                   var="sub" itemLabel="#{sub.nombre_seccion}" itemValue="#{sub.idSeccion}"/>
+                </p:selectOneMenu>
+                <p:outputLabel value="Tipo puesto"/>
+           <p:selectOneMenu id="cmbTpuesto" 
+                            value="#{controladorTarifa.tarifaSel.id_tipo_puesto.id_tipo_puesto}" 
+                                 effect="fold" required="true" requiredMessage="El tipo es obligatorio">
+                    <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                    <f:selectItems value="#{controladorTarifa.lstTpuesto}"
+                                   var="sub" itemLabel="#{sub.descripcion_tipo_puesto}" itemValue="#{sub.id_tipo_puesto}"/>
+                </p:selectOneMenu>
+            </h:panelGrid>
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{controladorTarifa.actualizar()}"
+                                 update="frmPrincipal:tblTarifa"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgEditarTarifa').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgVerPiso" widgetVar="dlgVerPiso" closable="false" modal="true" resizable="true" 
+              header="Detalles" showEffect="size" hideEffect="size">
+        <h:form id="frmVerPiso">            
+            <h3>Piso: #{listadoPrediosCtrl.pisoSel.piso}</h3>              
+            <p:panel header="Datos Generales">
+                <b>
+                    <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <h:outputLabel value="Descripción: #{listadoPrediosCtrl.pisoSel.descripcion}"/>
+                        <h:outputLabel value="Estado: #{listadoPrediosCtrl.pisoSel.estadoPiso}"/>
+                        <h:outputLabel value="Área de construcción: #{listadoPrediosCtrl.pisoSel.areaConstruccion}"/>
+                        <h:outputLabel value="Año de construcción: #{listadoPrediosCtrl.pisoSel.anioConstruccion}"/>
+                    </p:panelGrid>
+                </b>
+            </p:panel>
+            <br/>
+            <p:panel header="Estructura">
+                <b>
+                    <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <h:outputLabel value="1.- Cimientos: #{listadoPrediosCtrl.pisoSel.estructCimientos}"/>
+                        <h:outputLabel value="2.- Columnas: #{listadoPrediosCtrl.pisoSel.estructColumnas}"/>
+                        <h:outputLabel value="3.- Vigas/Cadenas: #{listadoPrediosCtrl.pisoSel.estructVigas}"/>
+                        <h:outputLabel value="4.- Entrepisos: #{listadoPrediosCtrl.pisoSel.estructEntrepisos}"/>
+                        <h:outputLabel value="5.- Paredes: #{listadoPrediosCtrl.pisoSel.estructParedes}"/>
+                        <h:outputLabel value="6.- Cubierta: #{listadoPrediosCtrl.pisoSel.estructCubierta}"/>
+                        <h:outputLabel value="7.- Escaleras: #{listadoPrediosCtrl.pisoSel.estructEscaleras}"/>                    
+                    </p:panelGrid>
+                </b>
+            </p:panel>
+            <br/>
+            <p:panel header="Acabados">
+                <b>
+                    <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <h:outputLabel value="1.- Pisos: #{listadoPrediosCtrl.pisoSel.acabPisos}"/>
+                        <h:outputLabel value="2.- Puertas: #{listadoPrediosCtrl.pisoSel.acabPuertas}"/>
+                        <h:outputLabel value="3.- Ventanas: #{listadoPrediosCtrl.pisoSel.acabVentanas}"/>
+                        <h:outputLabel value="4.- Cubreventanas: #{listadoPrediosCtrl.pisoSel.acabCubrevent}"/>
+                        <h:outputLabel value="5.- Tumbados: #{listadoPrediosCtrl.pisoSel.acabTumbados}"/>
+                        <h:outputLabel value="6.- Cubierta: #{listadoPrediosCtrl.pisoSel.acabCubierta}"/>
+                        <h:outputLabel value="7.- Baños: #{listadoPrediosCtrl.pisoSel.acabBanios}"/>                          
+                        <h:outputLabel value="8.- Cocina: #{listadoPrediosCtrl.pisoSel.acabCocina}"/>
+                        <h:outputLabel value="9.- Closets: #{listadoPrediosCtrl.pisoSel.acabClosets}"/>
+                        <h:outputLabel value="10.- Rev. Interior: #{listadoPrediosCtrl.pisoSel.acabRevInterior}"/>   
+                        <h:outputLabel value="11.- Rev. Exterior: #{listadoPrediosCtrl.pisoSel.acabRevExt}"/>   
+                    </p:panelGrid>
+                </b>
+            </p:panel>
+            <p:separator/>
+            <center>                
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 onclick="PF('dlgVerPiso').hide()"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

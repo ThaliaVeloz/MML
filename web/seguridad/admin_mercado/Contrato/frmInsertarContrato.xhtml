@@ -1,0 +1,63 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgInsertarContrato" widgetVar="dlgInsertarContrato" closable="false" modal="true" resizable="true" 
+              header="Registrar Contrato" showEffect="size" hideEffect="size">
+        <h:form id="frmInsertarContrato">
+            <p:messages autoUpdate="true"/>
+            <p:panel>
+                <h:panelGrid columns="4" >
+                    <p:outputLabel value="Fecha Inicio: "/>                  
+                    <p:calendar id="fechaInicio" value="#{controladorContrato.fechaInicio}" 
+                                showOn="button"  pattern="dd-MM-yyyy"
+                                required="true"
+                                requiredMessage="Fecha Inicio es obligatoria"/>                    
+                    <p:outputLabel value="Fecha Fin: "/>
+                    <p:calendar id="fechaFin" value="#{controladorContrato.fechaFin}" 
+                                showOn="button"   pattern="dd-MM-yyyy"
+                                required="true"
+                                requiredMessage="Fecha fin es obligatoria"/>
+                    <p:outputLabel value="Comerciante:"/>
+                    <p:selectOneMenu id="cmbComerciante" 
+                                     value="#{controladorContrato.objContrato.id_comerciante.id_comerciante}" 
+                                     effect="fold" required="true" requiredMessage="Comerciante es obligatoria">
+                        <f:selectItem itemLabel="--Seleccione --" itemValue="#{null}"/>
+                        <f:selectItems value="#{controladorContrato.lstComerciante}"
+                                       var="sub" itemLabel="#{sub.identificador}" itemValue="#{sub.id_comerciante}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Puesto"/>
+                    <p:selectOneMenu id="cmbPuesto" 
+                                     value="#{controladorContrato.objContrato.id_puesto.id_puesto}" 
+                                     effect="fold" required="true" requiredMessage="Puesto es obligatoria">
+                        <f:selectItem itemLabel="--Seleccione --" itemValue="#{null}"/>
+                        <f:selectItems value="#{controladorContrato.lstPuesto}"
+                                       var="sub" itemLabel="#{sub.numero_puesto}" itemValue="#{sub.id_puesto}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Actividad"/>
+                    <p:selectOneMenu id="cmbAct" 
+                                     value="#{controladorContrato.objContrato.idActividad.idActividad}" 
+                                     effect="fold" required="true" requiredMessage="Actividad es obligatoria">
+                        <f:selectItem itemLabel="--Seleccione --" itemValue="#{null}"/>
+                        <f:selectItems value="#{controladorContrato.lstActividad}"
+                                       var="sub" itemLabel="#{sub.descripcion}" itemValue="#{sub.idActividad}"/>
+                    </p:selectOneMenu>
+
+                </h:panelGrid>
+            </p:panel>
+
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{controladorContrato.insertar()}"
+                                 update="frmPrincipal:tblContrato"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgInsertarContrato').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

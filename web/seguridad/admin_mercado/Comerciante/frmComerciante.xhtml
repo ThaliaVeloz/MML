@@ -1,0 +1,90 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../../WEB-INF/templates/interna/template.xhtml">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">
+
+                    <h:form id="frmPrincipal">
+                        <p:growl autoUpdate="true" showDetail="true"/>
+                        <p:messages autoUpdate="true" showDetail="true"/>
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+
+                        <p:dataTable id="tblComerciante" value="#{controladorComerciante.lstComerciante}" var="comerciante" 
+                                     reflow="true" rows="10" paginator="true"
+                                     rowKey="#{comerciante.id_comerciante}"
+                                     selection="#{controladorComerciante.comercianteSel}"
+                                     selectionMode="single">
+                            <p:column headerText="Id Comerciante" width="10%">
+                                <h:outputText value="#{comerciante.id_comerciante}"/>
+                            </p:column>
+                            <p:column headerText="Tipo Identificador">
+                                <h:outputText value="#{comerciante.tipo_identificador}"/>
+                            </p:column>
+                            <p:column headerText="Nombres">
+                                <h:outputText value="#{comerciante.nombres_c}"/>
+                            </p:column>
+                            <p:column headerText="Apellidos">
+                                <h:outputText value="#{comerciante.apellidos_c}"/>
+                            </p:column>
+                            <p:column headerText="Direccion">
+                                <h:outputText value="#{comerciante.direccion_c}"/>
+                            </p:column>
+                            <p:column headerText="Correo">
+                                <h:outputText value="#{comerciante.correo_c}"/>
+                            </p:column>
+                            <p:column headerText="Conadis">
+                                <h:outputText value="#{comerciante.conadis}"/>
+                            </p:column>
+                            <p:column headerText="Telefono">
+                                <h:outputText value="#{comerciante.telefono}"/>
+                            </p:column>
+
+                            <p:column headerText="Editar" width="10%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-pencil"
+                                                 title="Editar" 
+                                                 onclick="PF('dlgEditarComerciante').show()"
+                                                 update="frmEditarComerciante">
+                                    <f:setPropertyActionListener value="#{comerciante}" target="#{controladorComerciante.comercianteSel}"/>
+                                </p:commandButton>
+                            </p:column>
+                            <p:column headerText="Eliminar" width="10%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-delete-forever"
+                                                 title="Eliminar"
+                                                 onclick="PF('dlgEliminarComerciante').show()"
+                                                 update="frmEliminarComerciante">
+                                    <f:setPropertyActionListener value="#{comerciante}" target="#{controladorComerciante.comercianteSel}"/>   
+                                </p:commandButton>
+                            </p:column>
+                            <f:facet name="footer">
+                                <p:commandButton value="Nuevo Comerciante"
+                                                 icon="ui-icon-plus"
+                                                 onclick="PF('dlgInsertarComerciante').show()"
+                                                 update="frmInsertarComerciante"/>
+                            </f:facet>
+                        </p:dataTable>
+
+                    </h:form>   
+
+                </div>
+            </div>
+        </div>
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+            <img src="../../../resources/gifs/Loading.gif" alt=""/>                        
+        </p:dialog>   
+
+
+
+        <ui:include src="frmInsertarComerciante.xhtml"/>   
+        <ui:include src="frmEditarComerciante.xhtml"/>   
+        <ui:include src="frmEliminarComerciante.xhtml"/>   
+    </ui:define>
+</ui:composition>

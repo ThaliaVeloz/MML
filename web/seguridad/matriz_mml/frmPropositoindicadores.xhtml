@@ -1,0 +1,159 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">                   
+                    <h:form id="frmUsuarios">
+                        <div class="main1-box" style="height: 100%">                                                                                                           
+                            <p:fieldset legend="INSERTAR INDICADORES Y MEDIOS VERIFICACIÓN" toggleable="true" toggleSpeed="500">                   
+                               
+                                <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                                    <br/> 
+                                    <p:panel>
+                                        <center>
+                                            <b>
+                                                <h3>INDICADORES PROPÓSITO</h3>
+                                            </b>
+                                        </center>
+
+
+                                        <p:dataList id="dtlIndicadores" value="#{indicadores_propositoC.inpropositolist}" 
+                                                    var="indicador" type="unordered" 
+                                                    itemType="none" rows="1" 
+                                                    styleClass="paginated">
+
+                                            <p:commandButton value="#{indicador.des_in_proposito}"
+                                                             action="#{indicadores_propositoC.obtenerMedios()}"
+                                                             update="frmUsuarios:dtlMedios">
+                                                <f:setPropertyActionListener value="#{indicador}" target="#{indicadores_propositoC.indicadorSel}" />
+                                            </p:commandButton>
+                                            <f:facet name="header">
+                                                INDICADORES
+                                            </f:facet>
+
+                                        </p:dataList>
+
+
+                                        <br/>
+                                        <br/>
+                                        <center>
+                                            <p:commandButton value="Nuevo Indicador" icon="ui-icon-plusthick"
+                                                             onclick="PF('dlgRegistrarIn').show();"/>
+                                        </center>
+                                    </p:panel>
+                                    <p:panel>
+                                        <center>
+                                            <b>
+                                                <h3>MEDIOS INDICADORES</h3>
+                                            </b>
+                                        </center>
+                                        <p:dataList id="dtlMedios" value="#{indicadores_propositoC.lstMedios}" 
+                                                    var="medio" type="unordered" 
+                                                    itemType="none" 
+                                                    rows="1" 
+                                                    styleClass="paginated">
+                                            <f:facet name="header">
+                                                MEDIOS
+                                            </f:facet>
+
+                                            <p:commandButton value="#{medio.observa_medios_veri_in}"/>
+
+                                        </p:dataList>
+                                        <br/>
+                                        <br/>
+                                        <center>
+                                            <p:commandButton value="Nuevo Adjunto" icon="ui-icon-plusthick"
+                                                             onclick="PF('dlgRegistrarAd').show();"/>
+                                        </center>
+                                    </p:panel>
+                                </p:panelGrid>                                
+                            </p:fieldset>
+
+                        </div> 
+                    </h:form>
+
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">                        
+                        <img src="../../resources/gifs/Loading.gif" alt=""/>
+                    </p:dialog>
+
+
+                   
+
+                    <p:dialog  widgetVar="dlgRegistrarAd" modal="true" closable="false" resizable="false"
+                               showEffect="clip" hideEffect="fold">
+                        <h:form id="frmRegistrarAd">
+                            <div class="main1-box" style="height: 100%">                                                                                                           
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                    <h:panelGroup id="pnadjunto">
+                                        <div class="ui-g-12">
+                                            <p:fieldset legend="ADJUNTAR INDICADOR" toggleable="true" toggleSpeed="500">                   
+                                                
+                                                <p:panelGrid id="pngSubirArchivo" columns="2" style="width: 510px;" styleClass="ui-panelgrid-blank form-group">
+                                                    <p:fileUpload fileUploadListener="#{indicadores_propositoC.cargarArchivoDocumento}"
+                                                                  allowTypes="/(\.|\/)(pdf|doc?x|odt)$/" label="Abrir" mode="advanced"  
+                                                                  update="pngSubirArchivo,pngDatos" uploadLabel="Subir" cancelLabel="Cancelar"   
+                                                                  value="#{indicadores_propositoC.archivoDocumento}"
+                                                                  required="true" requiredMessage="Cargar Documento!!" />                                                              
+                                                </p:panelGrid>
+
+                                                <p:panelGrid id="pngDatos" columns="2" styleClass="ui-panelgrid-blank form-group">
+                                                    <p:outputLabel value="Documento:"/>
+                                                    <p:outputLabel id ="txtRutaDocumento" value="#{indicadores_propositoC.nombreDocumento}"/>
+                                                </p:panelGrid>   
+                                                
+                                         
+                                            </p:fieldset>
+                                        </div>    
+                                    </h:panelGroup>
+
+                                </p:panelGrid>
+
+                            </div> 
+                            <p:separator/>
+                            <center>
+                                <p:commandButton value="Aceptar" action="#{propietarioCtrl.insertarUsuario()}" update="frmRegistrarAd"/>
+                                <p:commandButton value="Cancelar" type="button" onclick="PF('dlgRegistrarAd').hide();"/>
+                            </center>  
+
+                        </h:form>
+                    </p:dialog>
+
+
+                    <p:dialog  widgetVar="dlgActualizar" modal="true" closable="false" resizable="false"
+                               showEffect="clip" hideEffect="fold" >
+                        <h:form id="frmActualizar">
+
+                        </h:form>
+
+                    </p:dialog>
+
+                    <p:dialog header="Esta Seguro que Desea Eliminar el Registro?" widgetVar="dlgEliminar" modal="true" closable="false" resizable="false"
+                              showEffect="clip" hideEffect="fold">
+                        <h:form id="frmEliminar">
+                            <p:panel header="ELIMINAR PROYECTO"> 
+
+                                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />     
+                                <p:separator/>
+                                <center>
+                                    <p:commandButton value="Aceptar"  action="#{propietarioCtrl.eliminarUsuario()}" update="frmEliminar"/>
+                                    <p:commandButton value="Cancelar" type="button" onclick="PF('dlgEliminar').hide();"/>
+                                </center>
+                            </p:panel>
+
+                        </h:form>
+                    </p:dialog>                   
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

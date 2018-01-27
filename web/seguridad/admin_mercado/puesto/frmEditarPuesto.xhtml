@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgEditarPuesto" widgetVar="dlgEditarPuesto" closable="false" modal="true" resizable="true" 
+              header="Editar Puesto" showEffect="size" hideEffect="size">
+        <h:form id="frmEditarPuesto">
+            <h:panelGrid columns="2">
+                <p:outputLabel value="Numero Puesto"/>
+                <p:inputText value="#{controladorPuesto.puestoSel.numero_puesto}"
+                             required="true"
+                             requiredMessage="Obligatorio"/>
+                <p:outputLabel value="Tarifa"/>
+
+                <p:selectOneMenu id="cmbSubTarifa" 
+                                 value="#{controladorPuesto.puestoSel.id_tarifa.idTarifa}" 
+                                 effect="fold" required="true" requiredMessage="La tarifa es obligatoria">
+                    <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                    <f:selectItems value="#{controladorPuesto.lstTarifa}"
+                                   var="sub" itemLabel="#{sub.valor_tarifa}" itemValue="#{sub.idTarifa}"/>
+                </p:selectOneMenu>
+                <p:outputLabel value="Mercado"/>
+           <p:selectOneMenu id="cmbSubMercado" 
+                            value="#{controladorPuesto.puestoSel.id_mercado.id_mercado}" 
+                                 effect="fold" required="true" requiredMessage="La tarifa es obligatoria">
+                    <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                    <f:selectItems value="#{controladorPuesto.lstMercado}"
+                                   var="sub" itemLabel="#{sub.nombre_mercado}" itemValue="#{sub.id_mercado}"/>
+                </p:selectOneMenu>
+            </h:panelGrid>
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{controladorPuesto.actualizar()}"
+                                 update="frmPrincipal:tblPuesto"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgEditarPuesto').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

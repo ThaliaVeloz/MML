@@ -1,0 +1,102 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../../WEB-INF/templates/interna/template.xhtml">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">
+                    <h:form id="frmPrincipal">                        
+                        <p:growl autoUpdate="true" showDetail="true"/>
+                        <p:messages autoUpdate="true" showDetail="true"/>
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+
+                        <p:dataTable id="tblComprobante" value="#{controladorComprobante.lstComprobantes}" var="comprobante" 
+                                     reflow="true" rows="10" paginator="true"
+                                     rowKey="#{comprobante.id_comprobante}"
+                                     selection="#{controladorComprobante.comprobanteSel}"
+                                     selectionMode="single">       
+                            <p:column headerText="Id comprobante" width="8%" style="text-align: center">
+                                <h:outputText value="#{comprobante.id_comprobante}"/>
+                            </p:column>
+                            <p:column headerText="Contrato" width="5%">
+                                <h:outputText value="#{comprobante.id_contrato.id_contrato}"/>
+                            </p:column>
+                            <p:column headerText="Identificación" width="10%">
+                                <h:outputText value="#{comprobante.id_contrato.id_comerciante.identificador} "/>
+                            </p:column>  
+                            <p:column headerText="Comerciante" width="15%">
+                                <h:outputText value="#{comprobante.id_contrato.id_comerciante.apellidos_c} #{comprobante.id_contrato.id_comerciante.nombres_c}"/>
+                            </p:column>
+                            <p:column headerText="Tarifa" width="5%">
+                                <h:outputText value="#{comprobante.id_tarifa.valor_tarifa}"/>
+                            </p:column>
+
+                            <p:column headerText="IVA" width="5%">
+                                <h:outputText value="#{comprobante.iva}"/>
+                            </p:column>
+
+                            <p:column headerText="Mes de pago" width="5%">
+                                <h:outputText value="#{comprobante.mes_pago}">
+                                    <f:convertDateTime pattern="MMM" locale="es"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Año de pago" width="5%" style="text-align: center">
+                                <h:outputText value="#{comprobante.mes_pago}">
+                                    <f:convertDateTime pattern="yyyy" locale="es"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Editar" width="5%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-pencil"
+                                                 title="Editar"/>
+                            </p:column>
+
+                            <p:column headerText="Eliminar" width="5%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-trash"
+                                                 title="Editar"
+                                                 onclick="PF('dlgEliminar').show()"
+                                                 update="frmEliminar">
+                                    <f:setPropertyActionListener value="#{comprobante}" target="#{controladorComprobante.comprobanteSel}"/>
+                                </p:commandButton>
+                            </p:column>
+
+                            <f:facet name="footer">
+                                <p:commandButton value="Nuevo Contrato"
+                                                 icon="ui-icon-plus"   />
+
+                                <p:commandButton icon="ui-icon-local-printshop" ajax="false"
+                                                 title="Imprimir reporte"
+                                                 value="Reporte Global"
+                                                 actionListener="#{controladorComprobante.verReporteGeneral()}"
+                                                 onclick="this.form.target = '_blank'">                                       
+                                </p:commandButton>
+                            <!--<p:commandButton icon="ui-icon-local-printshop" ajax="false"
+                                                 title="Imprimir reporte"
+                                                 value="Reporte Global 2"
+                                                 actionListener=""#"{controladorComprobante.verReporteGeneral2()}"
+                                                 onclick="this.form.target = '_blank'">                                       
+                                </p:commandButton> -->
+
+                            </f:facet>
+                        </p:dataTable>
+
+                    </h:form>   
+
+                </div>
+            </div>
+        </div>
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+            <img src="../../../resources/gifs/Loading.gif" alt=""/>                        
+        </p:dialog>   
+
+        <ui:include src="frmEliminar.xhtml"/>   
+    </ui:define>
+</ui:composition>

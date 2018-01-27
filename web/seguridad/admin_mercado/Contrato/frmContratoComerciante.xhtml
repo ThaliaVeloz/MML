@@ -1,0 +1,117 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../../WEB-INF/templates/interna/template.xhtml">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">
+
+                    <h:form id="frmPrincipal">
+                        <p:growl autoUpdate="true" showDetail="true"/>
+                        <p:messages autoUpdate="true" showDetail="true"/>
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+                        <center>
+                            <h:panelGrid columns="4">
+                                <p:outputLabel value="Identificador: "/>
+                                <p:inputText value="#{controladorContrato.parametro}"
+                                             placeholder="Ej. 0603977224"/>
+                                <p:commandButton value="Buscar"
+                                                 icon="ui-icon-search"
+                                                 action="#{controladorContrato.encontrarContratos()}"
+                                                 update="frmPrincipal:tblContrato"/>
+                                <p:commandButton value="Limpiar"
+                                                 icon="ui-icon-refresh"
+                                                 action="#{controladorContrato.obtenerContrato()}"
+                                                 update="frmPrincipal:tblContrato"/>
+                            </h:panelGrid>
+                        </center>
+                        <p:dataTable id="tblContrato" value="#{controladorContrato.lstContrato}" var="contrato" 
+                                     reflow="true" rows="10" paginator="true"
+                                     rowKey="#{contrato.id_contrato}"
+                                     selection="#{controladorContrato.contratoSel}"
+                                     selectionMode="single">
+                            <p:column headerText="Id Contrato" width="5%">
+                                <h:outputText value="#{contrato.id_contrato}"/>
+                            </p:column>
+                            <p:column headerText="Identificación">
+                                <h:outputText value="#{contrato.id_comerciante.identificador}"/>
+                            </p:column>
+                            <p:column headerText="Comerciante">
+                                <h:outputText value="#{contrato.id_comerciante.nombres_c} #{contrato.id_comerciante.apellidos_c}"/>
+                            </p:column>
+                            <p:column headerText="Actividad">
+                                <h:outputText value="#{contrato.idActividad.descripcion}"/>
+                            </p:column>
+                            <p:column headerText="Fecha Inicio" width="10%" style="text-align: center">
+                                <h:outputText value="#{contrato.fecha_inicio}"/>
+                            </p:column>
+                            <p:column headerText="Fecha Fin" width="10%" style="text-align: center">
+                                <h:outputText value="#{contrato.fecha_fin}"/>
+                            </p:column>
+
+                            <p:column headerText="Puesto">
+                                <h:outputText value="#{contrato.id_puesto.numero_puesto}"/>
+                            </p:column>
+<!--
+                            <p:column headerText="Editar" width="5%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-pencil"
+                                                 title="Editar" 
+                                                 onclick="PF('dlgEditarContrato').show()"
+                                                 update="frmEditarContrato">
+                                    <f:setPropertyActionListener value="#{contrato}" target="#{controladorContrato.contratoSel}"/>
+                                </p:commandButton>
+                            </p:column>-->
+                     <!--       <p:column headerText="Eliminar" width="5%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-delete-forever"
+                                                 title="Eliminar"
+                                                 onclick="PF('dlgEliminarContrato').show()"
+                                                 update="frmEliminarContrato">
+                                    <f:setPropertyActionListener value="#{contrato}" target="#{controladorContrato.contratoSel}"/>   
+                                </p:commandButton>
+                            </p:column>-->
+                     
+                     <!--    <p:column headerText="Reporte" width="5%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-local-printshop"
+                                                 title="Imprimir reporte" ajax="false"
+                                                 actionListener="#{controladorContrato.verReporteIndividual()}"
+                                                 onclick="this.form.target = '_blank'">
+                                    <f:setPropertyActionListener value="#{contrato}" target="#{controladorContrato.contratoSel}"/>         
+                                </p:commandButton>
+                            </p:column>-->
+                           <!--   <f:facet name="footer">
+                               <p:commandButton value="Nuevo Contrato"
+                                                 icon="ui-icon-plus"
+                                                 onclick="PF('dlgInsertarContrato').show()"
+                                                 update="frmInsertarContrato"/>
+                               <p:column headerText="Reporte" width="5%" style="text-align: center">
+                                    <p:commandButton icon="ui-icon-local-printshop" ajax="false"
+                                                     title="Imprimir reporte"
+                                                     value="Reporte Global"
+                                                     actionListener="#{controladorContrato.verReporteGeneral()}"
+                                                     onclick="this.form.target = '_blank'">                                      
+                                    </p:commandButton>  
+                                </p:column>
+                            </f:facet>--> 
+                        </p:dataTable>
+
+                    </h:form>   
+
+                </div>
+            </div>
+        </div>
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+            <img src="../../../resources/gifs/Loading.gif" alt=""/>                        
+        </p:dialog>   
+
+        <ui:include src="frmInsertarContrato.xhtml"/>   
+        <ui:include src="frmEditarContrato.xhtml"/>   
+        <ui:include src="frmEliminarContrato.xhtml"/>   
+    </ui:define>
+</ui:composition>

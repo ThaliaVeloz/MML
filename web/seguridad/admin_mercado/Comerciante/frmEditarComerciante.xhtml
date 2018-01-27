@@ -1,0 +1,57 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgEditarComerciante" widgetVar="dlgEditarComerciante" closable="false" modal="true" resizable="true" 
+              header="Editar Comerciante" showEffect="size" hideEffect="size">
+        <h:form id="frmEditarComerciante">
+            <h:panelGrid columns="8">
+                 <p:outputLabel value="Tipo Identificador: "/>
+                <p:selectOneMenu id="cmdTIndent" value="#{controladorComerciante.comercianteSel.tipo_identificador}" style="width:125px" effect="fold" required="true" requiredMessage="Tipo Identificador es obligatoria">
+                    <f:selectItem itemLabel="--Seleccione--" itemValue="" />
+                    <f:selectItem itemLabel="Cedula" itemValue="Cedula" />
+                    <f:selectItem itemLabel="Pasaporte" itemValue="Pasaporte" />
+                </p:selectOneMenu>
+                <p:outputLabel value="identificador: "/>
+                <p:inputText value="#{controladorComerciante.comercianteSel.identificador}"
+                             required="true"
+                             requiredMessage="Identificador es obligatoria"/>
+                <p:outputLabel value="Nombres: "/>
+                <p:inputText value="#{controladorComerciante.comercianteSel.nombres_c}"
+                             required="true"
+                             requiredMessage="Nombres es Obligatorio"/>
+                <p:outputLabel value="Apellidos: "/>
+                <p:inputText value="#{controladorComerciante.comercianteSel.apellidos_c}"
+                             required="true"
+                             requiredMessage="Apellidos es Obligatorio"/>
+                <p:outputLabel value="Direccion: "/>
+                <p:inputText value="#{controladorComerciante.comercianteSel.direccion_c}"
+                             required="true"
+                             requiredMessage="Direccion es Obligatoria"/>
+                <p:outputLabel value="Correo: "/>
+                <p:inputText value="#{controladorComerciante.comercianteSel.correo_c}"
+                             required="false"/>
+                <p:outputLabel value="Conadis: "/>
+                <p:selectOneMenu id="cmdConadis" value="#{controladorComerciante.comercianteSel.conadis}" style="width:125px" effect="fold" required="true" requiredMessage="Conadis es obligatoria">
+                    <f:selectItem itemLabel="--Seleccione--" itemValue="" />
+                    <f:selectItem itemLabel="Si" itemValue="Si" />
+                    <f:selectItem itemLabel="No" itemValue="No" />
+                </p:selectOneMenu>
+                <p:outputLabel value="Telefono: "/>
+                <p:inputText value="#{controladorComerciante.comercianteSel.telefono}"/>
+            </h:panelGrid>
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{controladorComerciante.actualizar()}"
+                                 update="frmPrincipal:tblComerciante"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgEditarComerciante').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

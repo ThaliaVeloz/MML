@@ -1,0 +1,101 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml">
+    <f:metadata>
+
+    </f:metadata>
+
+
+
+    <ui:define name="content">
+
+        <h:form>
+            <p:growl autoUpdate="true" showDetail="true"/>            
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+            <center>
+                <h3>Editar Predio</h3>
+            </center>
+
+            <div class="ui-g">
+
+                <div class="ui-g-12">
+                    <div class="card">                       
+                        <center>
+                            <b>Buscar predio:</b>
+                            <p:inputText value="#{controladorEditarPredio.claveCatastral}" required="true" 
+                                         requiredMessage="La Clave Catastral es un campo obligatorio"/>
+                            <p:commandButton action="#{controladorEditarPredio.obtenerPredio()}"
+                                             value="Buscar" icon="ui-icon-search" update="pnlEdicion"/>    
+                        </center>                    
+                    </div>
+                </div>
+
+                <div class="ui-g-12" id="divPredio">
+                    <div class="card">
+                        <p:panel id="pnlEdicion" style="border: none;">
+                            <center>
+                                <b><h:outputText id="txtPredio" value="#{controladorEditarPredio.objPredio.claveCatastral}"/></b>
+                            </center>
+
+                            <p:fieldset legend="UBICACIÓN" toggleable="true" toggleSpeed="500">
+                                <p:panelGrid columns="8" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                    <h:outputLabel value="Barrio:"/>
+                                    <p:selectOneMenu value="#{controladorEditarPredio.objPredio.barrio}" effect="fold" editable="true"
+                                                     filter="true" filterMatchMode="startsWith">
+                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                        <f:selectItems value="#{controladorEditarPredio.lstBarrios}" var="barrio" 
+                                                       itemLabel="#{barrio.nombre}" itemValue="#{barrio.nombre}"/>
+                                    </p:selectOneMenu>
+                                    <h:outputLabel value="Calle principal: "/>
+                                    <p:selectOneMenu value="#{controladorEditarPredio.objPredio.callePrinc}" effect="fold" editable="true"
+                                                     filter="true" filterMatchMode="startsWith">
+                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                        <f:selectItems value="#{controladorEditarPredio.lstCalles}" var="calle"
+                                                       itemLabel="#{calle.nombre}" itemValue="#{calle.nombre}"/>
+                                    </p:selectOneMenu>
+                                    <h:outputLabel value="Entre: "/>
+                                    <p:selectOneMenu value="#{controladorEditarPredio.objPredio.calleSecund}" effect="fold" editable="true"
+                                                     filter="true" filterMatchMode="startsWith">
+                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                        <f:selectItems value="#{controladorEditarPredio.lstCalles}" var="calleSec"
+                                                       itemLabel="#{calleSec.nombre}" itemValue="#{calleSec.nombre}"/>
+                                    </p:selectOneMenu>
+                                    <h:outputLabel value="Número:"/>
+                                    <p:inputText value="#{controladorEditarPredio.objPredio.numCasa}" style="width: 85%"/>
+                                    <h:outputLabel value="Nombre del edificio:"/>
+                                    <p:inputText value="#{controladorEditarPredio.objPredio.nombreEdificio}" placeholder="Ej. Residencia Yépez"/>
+                                </p:panelGrid>
+                            </p:fieldset>
+
+                            <p:fieldset legend="IDENTIFICACIÓN LEGAL" toggleable="true" toggleSpeed="500">                                
+                                <p:panelGrid columns="6" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                    <p:outputLabel id="otxtPropietario" value="Titular del Dominio:" />
+                                    <p:outputLabel id="txtPropietario" 
+                                                   value="#{controladorEditarPredio.objPredio.propietario.nombres} #{controladorEditarPredio.objPredio.propietario.apellidos}" />
+                                    <p:commandButton value="Editar" icon="ui-icon-edit"/>
+                                    <p:outputLabel id="otxtRepLegal" value="Representante legal:" />
+                                    <p:outputLabel id="txtRepLegal" 
+                                                   value="#{controladorEditarPredio.objPredio.repLegal.nombres} #{controladorEditarPredio.objPredio.repLegal.apellidos}" />
+                                    <p:commandButton value="Editar" icon="ui-icon-edit"/>
+                                </p:panelGrid>
+
+                            </p:fieldset>
+                        </p:panel>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+
+
+
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+            <img src="../../resources/gifs/Loading.gif" alt=""/>               
+        </p:dialog>
+
+    </ui:define>
+</ui:composition>

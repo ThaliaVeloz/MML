@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgEditarMercado" widgetVar="dlgEditarMercado" closable="false" modal="true" resizable="true" 
+              header="Editar Mercado" showEffect="size" hideEffect="size">
+        <h:form id="frmEditarMercado">
+            <h:panelGrid columns="2">
+                <p:outputLabel value="Nombre Mercado:"/>
+                <p:inputText value="#{controladorMercado.mercadoSel.nombre_mercado}"
+                             required="true"
+                             requiredMessage="Obligatorio"/>
+                <p:outputLabel value="Estado:"/>
+                <p:inputText value="#{controladorMercado.mercadoSel.estado}"
+                             required="true"
+                             requiredMessage="Obligatorio"/>
+            </h:panelGrid>
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{controladorMercado.actualizar()}"
+                                 update="frmPrincipal:tblMercado"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgEditarMercado').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

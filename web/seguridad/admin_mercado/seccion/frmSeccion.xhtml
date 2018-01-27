@@ -1,0 +1,78 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../../WEB-INF/templates/interna/template.xhtml">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">
+
+                    <h:form id="frmPrincipal">
+                        <p:growl autoUpdate="true" showDetail="true"/>
+                        <p:messages autoUpdate="true" showDetail="true"/>
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+
+                        <p:dataTable id="tblSeccion" value="#{controladorSeccion.lstSecciones}" var="seccion" 
+                                     reflow="true" rows="10" paginator="true"
+                                     rowKey="#{seccion.idSeccion}"
+                                     selection="#{controladorSeccion.seccionSel}"
+                                     selectionMode="single">
+                            <p:column headerText="Id Seccion" width="10%">
+                                <h:outputText value="#{seccion.idSeccion}"/>
+                            </p:column>
+                            <p:column headerText="Nombre">
+                                <h:outputText value="#{seccion.nombre_seccion}"/>
+                            </p:column>
+                            <p:column headerText="Estado">
+                                <h:outputText value="#{seccion.estado}"/>
+                            </p:column>
+                            <p:column headerText="Area">
+                                <h:outputText value="#{seccion.area}"/>
+                            </p:column>
+                            <p:column headerText="Dimension">
+                                <h:outputText value="#{seccion.dimension}"/>
+                            </p:column>
+                            <p:column headerText="Editar" width="10%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-pencil"
+                                                 title="Editar" 
+                                                 onclick="PF('dlgEditarSeccion').show()"
+                                                 update="frmEditarSeccion">
+                                    <f:setPropertyActionListener value="#{seccion}" target="#{controladorSeccion.seccionSel}"/>
+                                </p:commandButton>
+                            </p:column>
+
+                            <p:column headerText="Eliminar" width="10%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-delete-forever"
+                                                 title="Eliminar"
+                                                 onclick="PF('dlgEliminarSeccion').show()"
+                                                 update="frmEliminarSeccion">
+                                    <f:setPropertyActionListener value="#{seccion}" target="#{controladorSeccion.seccionSel}"/>   
+                                </p:commandButton>
+                            </p:column>
+                            <f:facet name="footer">
+                                <p:commandButton value="Nueva Seccion"
+                                                 icon="ui-icon-plus"
+                                                 onclick="PF('dlgInsertarSeccion').show()"
+                                                 update="frmInsertarSeccion"/>
+                            </f:facet>
+                        </p:dataTable>
+
+                    </h:form>   
+
+                </div>
+            </div>
+        </div>
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+            <img src="../../../resources/gifs/Loading.gif" alt=""/>                        
+        </p:dialog>   
+        <ui:include src="frmInsertarSeccion.xhtml"/>
+        <ui:include src="frmEditarSeccion.xhtml"/>
+        <ui:include src="frmEliminarSeccion.xhtml"/>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgInsertarActividad" widgetVar="dlgInsertarActividad" closable="false" modal="true" resizable="true" 
+              header="Registrar Actividad" showEffect="size" hideEffect="size">
+        <h:form id="frmInsertarActividad">
+            <p:messages autoUpdate="true"/>
+            <p:panel>
+                <h:panelGrid columns="2" >
+                    <p:outputLabel value="Actividad: "/>
+                    <p:inputTextarea value="#{controladorActividad.objActividad.descripcion}"
+                                 required="true"
+                                 requiredMessage="La descripción es obligatoria"/>
+                    <p:outputLabel value="Sub actividad"/>
+                    <p:selectOneMenu id="cmbSubActividades" 
+                                     value="#{controladorActividad.objActividad.subActividad.idSubActividad}" 
+                                     effect="fold" required="true" requiredMessage="La subactivida es obligatoria">
+                        <f:selectItem itemLabel="--Seleccione --" itemValue="#{null}"/>
+                        <f:selectItems value="#{controladorActividad.lstSubactividades}"
+                                       var="sub" itemLabel="#{sub.subActividad}" itemValue="#{sub.idSubActividad}"/>
+                    </p:selectOneMenu>
+            
+                </h:panelGrid>
+            </p:panel>
+
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{controladorActividad.insertar()}"
+                                 update="frmPrincipal:tblActividad"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgInsertarActividad').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>
