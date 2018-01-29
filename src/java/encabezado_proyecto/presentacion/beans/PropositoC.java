@@ -32,7 +32,7 @@ public class PropositoC implements Serializable {
     public void cargarProposito() {
         try {
 
-            setPropositolist(FProposito.obtenerPropositoDadoCodigoProyecto(0));
+        //    setPropositolist(FProposito.obtenerPropositoDadoCodigoProyecto(0));
 
         } catch (Exception e) {
             System.out.println("public void cargarProyecto() dice: " + e.getMessage());

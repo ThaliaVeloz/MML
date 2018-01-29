@@ -35,6 +35,7 @@ public class ProyectoC implements Serializable {
     private HttpServletRequest httpServletRequest;
     private FacesContext faceContext;
     private Usuario sessionUsuario;
+    private String habilitar;
 
     public ProyectoC() {
 
@@ -44,7 +45,7 @@ public class ProyectoC implements Serializable {
         faceContext = FacesContext.getCurrentInstance();
         httpServletRequest = (HttpServletRequest) faceContext.getExternalContext().getRequest();
         cargarProyecto();
-        cargarProposito();
+        //  cargarProposito();
 
     }
 
@@ -66,9 +67,13 @@ public class ProyectoC implements Serializable {
 
     public void cargarProposito() {
         try {
-
-            setPropositolist(FProposito.obtenerPropositoDadoCodigoProyecto(proyecto.getCod_proyecto()));
-            // System.out.println("Total de proyectos: " + proyectolist.size());
+            setProposito(FProposito.obtenerPropositoDadoCodigoProyecto(proyectoSel.getCod_proyecto()));
+            if (proposito.getCod_proposito() 
+                    != null) {
+                habilitar = "true";
+            } else {
+                habilitar = "false";
+            }
         } catch (Exception e) {
             System.out.println("public void cargarProyecto() dice: " + e.getMessage());
         }
@@ -135,8 +140,7 @@ public class ProyectoC implements Serializable {
         try {
 
             //  proyecto.setInt_id_usuario(sessionUsuario.getIdPersona()); 
-            
-            System.out.println("Codigo del yecto "+proyectoSel.getCod_proyecto());
+            System.out.println("Codigo del yecto " + proyectoSel.getCod_proyecto());
             proposito.setCod_proposito(proyectoSel.getCod_proyecto());
             String respuesta = FProposito.ingresarProposito(proposito);
             proposito = new Proposito();
@@ -146,14 +150,36 @@ public class ProyectoC implements Serializable {
 
             DefaultRequestContext.getCurrentInstance().execute("PF('dlgproposito').hide()");
         } catch (Exception e) {
-            System.out.println("public void ingresarProposito() dice: "+e.getMessage());
+            System.out.println("public void ingresarProposito() dice: " + e.getMessage());
             Util.addErrorMessage("public void registrar proposito() dice: " + e.getMessage());
+        }
+    }
+
+    public void actualizarProposito() {
+        try {
+
+            String respuesta = FProposito.actualizarProposito(proposito);
+            Util.addSuccessMessage(respuesta);
+            //cargarProposito();
+            //resetearFitrosTabla("frmAcciones:tblAcciones");
+            proposito = new Proposito();
+            DefaultRequestContext.getCurrentInstance().execute("PF('dlgproposito').hide()");
+        } catch (Exception e) {
+            Util.addErrorMessage("public void actualizar() dice: " + e.getMessage());
         }
     }
 
     public void resetearFitrosTabla(String id) {
         DataTable table = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent(id);
         table.reset();
+    }
+
+    public String getHabilitar() {
+        return habilitar;
+    }
+
+    public void setHabilitar(String habilitar) {
+        this.habilitar = habilitar;
     }
 
     public ArrayList<Proposito> getPropositolist() {

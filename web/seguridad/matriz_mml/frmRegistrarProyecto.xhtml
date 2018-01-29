@@ -68,9 +68,9 @@
                                 </p:column>
 
 
-                                <p:column headerText="Proposito" width="3%" style="text-align: center" visible="false">
+                                <p:column headerText="Propósito" width="3%" style="text-align: center" visible="false">
                                     <p:commandButton title=" Ingresar Proposito" icon="ui-icon-description"
-                                                     onclick="PF('dlgproposito').show();" update="frmProposito"   >
+                                                     onclick="PF('dlgproposito').show();" update="frmProposito" action="#{proyectoC.cargarProposito()}" >
 
                                         <f:setPropertyActionListener value="#{proyecto}" target="#{proyectoC.proyectoSel}"/>
                                     </p:commandButton>
@@ -81,24 +81,41 @@
 
                                         <f:setPropertyActionListener value="#{usuario}" target="#{propietarioCtrl.usuarioSel}"/>
                                     </p:commandButton>
-                                    <!--
-                                    <p:commandButton title="Componentes" value="Componentes"
-                                                     onclick="PF('dlgActualizar').show();"
-                                                     update="frmActualizar">
 
-                                        <f:setPropertyActionListener value="#{usuario}" target="#{propietarioCtrl.usuarioSel}"/>
-                                    </p:commandButton>
-                                    <p:commandButton title="Actividades" value="Actividades"
-                                                     onclick="PF('dlgActualizar').show();"
-                                                     update="frmActualizar">
-
-                                        <f:setPropertyActionListener value="#{usuario}" target="#{propietarioCtrl.usuarioSel}"/>
-                                    </p:commandButton>
-                                    -->
 
                                 </p:column>
+                                <p:column headerText="Componentes" width="3%" style="text-align: center" visible="false">
+                                    <p:commandButton title=" Ingresar Componente" icon="ui-icon-description"
+                                                     onclick="PF('dlgproposito').show();" update="frmProposito" action="#{proyectoC.cargarProposito()}" >
+
+                                        <f:setPropertyActionListener value="#{proyecto}" target="#{proyectoC.proyectoSel}"/>
+                                    </p:commandButton>
+
+                                    <p:commandButton title="Ingresar Indicadores y Medios" icon="ui-icon-attach-file"
+                                                     onclick="PF('wdlgIndicadores').show();"
+                                                     >
+
+                                        <f:setPropertyActionListener value="#{usuario}" target="#{propietarioCtrl.usuarioSel}"/>
+                                    </p:commandButton>
 
 
+                                </p:column>
+                                <p:column headerText="Actividades" width="3%" style="text-align: center" visible="false">
+                                    <p:commandButton title=" Ingresar Actividad" icon="ui-icon-description"
+                                                     onclick="PF('dlgproposito').show();" update="frmProposito" action="#{proyectoC.cargarProposito()}" >
+
+                                        <f:setPropertyActionListener value="#{proyecto}" target="#{proyectoC.proyectoSel}"/>
+                                    </p:commandButton>
+
+                                    <p:commandButton title="Ingresar Medios" icon="ui-icon-attach-file"
+                                                     onclick="PF('wdlgIndicadores').show();"
+                                                     >
+
+                                        <f:setPropertyActionListener value="#{usuario}" target="#{propietarioCtrl.usuarioSel}"/>
+                                    </p:commandButton>
+
+
+                                </p:column>
 
 
                                 <f:facet name="footer">
@@ -206,14 +223,11 @@
                                             </h:panelGroup>
                                         </p:panelGrid>
                                         <center>
-                                            <p:commandButton title="Registrar" icon="ui-icon-save" action="#{proyectoC.ingresarProposito()}" 
+                                            <p:commandButton title="Registrar" icon="ui-icon-save" action="#{proyectoC.ingresarProposito()}" disabled="#{proyectoC.habilitar}"
                                                              update="frmUsuarios:tblUsuarios,
-                                                             frmRegistrar,
-                                                             "/>
-                                            <p:commandButton title="Editar" icon="ui-icon-pencil" action="#{proyectoC.ingresarProyecto()}" 
-                                                             update="frmUsuarios:tblUsuarios,
-                                                             frmRegistrar,
-                                                             "/>
+                                                             frmRegistrar"/>
+                                            <p:commandButton title="Editar" icon="ui-icon-pencil" action="#{proyectoC.actualizarProposito()}" 
+                                                             update="frmUsuarios:tblUsuarios"/>
                                             <p:commandButton title="Eliminar" icon="ui-icon-delete" type="button" onclick="PF('dlgRegistrar').hide();"/>
                                         </center>  
                                     </h:panelGroup>

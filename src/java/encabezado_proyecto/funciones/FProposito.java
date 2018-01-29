@@ -86,8 +86,8 @@ public class FProposito implements Serializable {
         }
 
     }
-    
-    public static ArrayList<Proposito> obtenerPropositoDadoCodigoProyecto(int codigo) throws Exception {
+
+  /*  public static ArrayList<Proposito> obtenerPropositoDadoCodigoProyecto(int codigo) throws Exception {
         ArrayList<Proposito> lst = new ArrayList<>();
         AccesoDatos accesoDatos;
         PreparedStatement prstm;
@@ -101,16 +101,43 @@ public class FProposito implements Serializable {
             prstm.setInt(1, codigo);
             resultSet = accesoDatos.ejecutaPrepared(prstm);
             while (resultSet.next()) {
-                accion = new Proposito();                 
+                accion = new Proposito();
+                accion.setCod_proposito(resultSet.getInt("pcod_proposito"));
                 accion.setDescripcion_proposito(resultSet.getString("pdescripcion_proposito"));
                 accion.setCosto_proposito(resultSet.getDouble("pcosto_proposito"));
-                accion.setSupuesto_proposito(resultSet.getString("psupuesto_proposito"));            
-             
+                accion.setSupuesto_proposito(resultSet.getString("psupuesto_proposito"));
+
                 lst.add(accion);
             }
         } catch (Exception e) {
             throw e;
         }
         return lst;
+    }*/
+    public static Proposito obtenerPropositoDadoCodigoProyecto(int codigo) throws Exception {
+        
+        AccesoDatos accesoDatos;
+        PreparedStatement prstm;
+        Proposito accion = new Proposito();
+        ResultSet resultSet;
+        String sql;
+        try {
+            accesoDatos = new AccesoDatos();
+            sql = "select * from encabezado_proyecto.f_select_proposito_dado_codigo_proyecto(?)";
+            prstm = accesoDatos.creaPreparedSmt(sql);
+            prstm.setInt(1, codigo);
+            resultSet = accesoDatos.ejecutaPrepared(prstm);
+            while (resultSet.next()) {
+                accion = new Proposito();
+                accion.setCod_proposito(resultSet.getInt("pcod_proposito"));
+                accion.setDescripcion_proposito(resultSet.getString("pdescripcion_proposito"));
+                accion.setCosto_proposito(resultSet.getDouble("pcosto_proposito"));
+                accion.setSupuesto_proposito(resultSet.getString("psupuesto_proposito"));
+              
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+        return accion;
     }
 }
